@@ -7,4 +7,22 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--    ini color palette-->
+    <color name="greyTheme">#585858</color>
+    <color name="darkBlue">#2E5077</color>
+    <color name="teal">#4DA1A9</color>
+
+    <!--    ini color opsi warna buat set-->
+    <color name="lightPink">#E9D1D1</color>
+    <color name="pink">#F7BDD4</color>
+    <color name="green">#AACC99</color>
+    <color name="lightTeal">#A6D3CE</color>
+    <color name="purple">#C7C4E5</color>
+    <color name="blue">#B0CBE2</color>
+    <color name="orange">#FFCDAC</color>
+
+
+
+
 </resources>
