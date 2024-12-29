@@ -1,6 +1,8 @@
 package com.example.vanillastarter.func
 import com.example.vanillastarter.data.FlashcardDao 
 import com.example.vanillastarter.data.Flashcard
+import com.example.vanillastarter.data.CategoryDao 
+import com.example.vanillastarter.data.Category
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -47,13 +49,7 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
             _flashcard.value = dao.getFlashcardDetail(id)
         }
     }
-/*val name: String,
-    val description: String,
-    val link: String?,
-    val imagePath: String?,
-    val frequency: Int,
-    val parentId: Int,
-    val backgroundColor: String,*/
+
     fun addData(name: String, description: String="",imagePath: String?,frequency: Int=0,parentId: Int,backgroundColor: String="",link:String? ) {
         viewModelScope.launch {
             dao.insert(Flashcard(name=name, description=description,imagePath=imagePath,frequency=frequency,parentId=parentId,link=link,backgroundColor=backgroundColor))
@@ -75,6 +71,67 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
     }
 
     fun deleteData(data: Flashcard,parentId:Int) {
+        viewModelScope.launch {
+            dao.delete(data)
+            loadAllData(parentId)
+        }
+    }
+}
+
+
+
+
+
+
+
+class crudCategory(private val dao: CategoryDao) : ViewModel() {
+    private val _dataList = MutableStateFlow<List<Category>>(emptyList())
+    val dataList: StateFlow<List<Category>> get() = _dataList
+    private val _category = MutableStateFlow<Category?>(null) // Store a single Flashcard, initially null
+    val category: StateFlow<Category?> get()= _category // Expose as read-only StateFlow
+
+    init {
+        loadAllData(0)
+    }
+
+    private fun loadAllData(parentId: Int) {
+        viewModelScope.launch {
+            _dataList.value = dao.getCategoriesSortNameAsc(parentId)
+        }
+    }
+    private fun loadCategory(id: Int) {
+        viewModelScope.launch {
+            _category.value = dao.getCategoryDetail(id)
+        }
+    }
+/* val id: Int = 0,
+    val name: String,
+    val description: String,
+    val imagePath: String?,
+    val frequency: Int,
+    val parentId: Int?,
+    val backgroundColor: String*/
+    fun addData(name: String, description: String="",imagePath: String?,frequency: Int=0,parentId: Int,backgroundColor: String="" ) {
+        viewModelScope.launch {
+            dao.insert(Category(name=name, description=description,imagePath=imagePath,frequency=frequency,parentId=parentId,backgroundColor=backgroundColor))
+            loadAllData(parentId)
+        }
+    }
+    fun readData(id:Int) {
+        viewModelScope.launch {
+            loadCategory(id)
+            
+        }
+    }
+
+    fun updateData(data: Category,parentId:Int) {
+        viewModelScope.launch {
+            dao.update(data)
+            loadAllData(parentId)
+        }
+    }
+
+    fun deleteData(data: Category,parentId:Int) {
         viewModelScope.launch {
             dao.delete(data)
             loadAllData(parentId)
