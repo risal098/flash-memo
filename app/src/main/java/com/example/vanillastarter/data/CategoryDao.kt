@@ -19,7 +19,10 @@ interface CategoryDao {
 
     @Delete
     suspend fun delete(item: Category)
-
+		
+		@Query("DELETE FROM flashcards WHERE parentId = :parentId")
+    fun deleteAllChildren(parentId: Int)
+    
     @Query("SELECT * from categories WHERE id = :id")
     fun getCategoryDetail(id: Int): Category
 

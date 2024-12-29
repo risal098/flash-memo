@@ -26,7 +26,7 @@ import androidx.compose.material3.Text // For Text composable, if used
 import androidx.compose.runtime.Composable // If you are using composables in MainActivity
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-
+import kotlinx.coroutines.flow.*
 
 
 class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
@@ -39,18 +39,18 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
         loadAllData(0)
     }
 
-    private fun loadAllData(parentId: Int) {
+    fun loadAllData(parentId: Int) {
         viewModelScope.launch {
             _dataList.value = dao.getFlashcardsSortNameAsc(parentId)
         }
     }
-    private fun loadFlashcard(id: Int) {
+    fun loadFlashcard(id: Int) {
         viewModelScope.launch {
             _flashcard.value = dao.getFlashcardDetail(id)
         }
     }
 
-    fun addData(name: String, description: String="",imagePath: String?,frequency: Int=0,parentId: Int,backgroundColor: String="",link:String? ) {
+    fun addData(name: String, description: String="",imagePath: String?=null,frequency: Int=0,parentId: Int,backgroundColor: String="",link:String?=null ) {
         viewModelScope.launch {
             dao.insert(Flashcard(name=name, description=description,imagePath=imagePath,frequency=frequency,parentId=parentId,link=link,backgroundColor=backgroundColor))
             loadAllData(parentId)
@@ -86,24 +86,25 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
 
 class crudCategory(private val dao: CategoryDao) : ViewModel() {
     private val _dataList = MutableStateFlow<List<Category>>(emptyList())
-    val dataList: StateFlow<List<Category>> get() = _dataList
+    val dataList: StateFlow<List<Category>> get() = _dataList.asStateFlow()
     private val _category = MutableStateFlow<Category?>(null) // Store a single Flashcard, initially null
-    val category: StateFlow<Category?> get()= _category // Expose as read-only StateFlow
+    val category: StateFlow<Category?> get()= _category.asStateFlow() // Expose as read-only StateFlow
 
     init {
         loadAllData(0)
     }
 
-    private fun loadAllData(parentId: Int) {
+    fun loadAllData(parentId: Int) {
         viewModelScope.launch {
             _dataList.value = dao.getCategoriesSortNameAsc(parentId)
         }
     }
-    private fun loadCategory(id: Int) {
+    fun loadCategory(id: Int) {
         viewModelScope.launch {
             _category.value = dao.getCategoryDetail(id)
         }
     }
+    
 /* val id: Int = 0,
     val name: String,
     val description: String,
@@ -111,7 +112,7 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
     val frequency: Int,
     val parentId: Int?,
     val backgroundColor: String*/
-    fun addData(name: String, description: String="",imagePath: String?,frequency: Int=0,parentId: Int,backgroundColor: String="" ) {
+    fun addData(name: String, description: String="",imagePath: String?=null,frequency: Int=0,parentId: Int,backgroundColor: String="" ) {
         viewModelScope.launch {
             dao.insert(Category(name=name, description=description,imagePath=imagePath,frequency=frequency,parentId=parentId,backgroundColor=backgroundColor))
             loadAllData(parentId)
@@ -133,9 +134,33 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
 
     fun deleteData(data: Category,parentId:Int) {
         viewModelScope.launch {
+        		dao.deleteAllChildren(data.id!!)
             dao.delete(data)
+            
             loadAllData(parentId)
         }
+    }
+}
+
+
+class FlashcardViewModelFactory(private val dao: FlashcardDao) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(crudFlashcard::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return crudFlashcard(dao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+
+class CategoryViewModelFactory(private val dao: CategoryDao) : ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(crudCategory::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return crudCategory(dao) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 

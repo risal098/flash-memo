@@ -5,18 +5,10 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 
-@Entity(
-    tableName = "flashcards",
-    foreignKeys = [
-        ForeignKey(
-            entity = Category::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("parentId"),
-            onUpdate = ForeignKey.CASCADE,
-            onDelete = ForeignKey.CASCADE
-        )])
+@Entity(tableName = "flashcards")
 data class Flashcard (
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) 
+    val id:  Int? = null ,
     val name: String,
     val description: String,
     val link: String?,

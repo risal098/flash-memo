@@ -25,6 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.vanillastarter.data.*
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.nav.navCenter
 /*
 @OptIn(ExperimentalMaterial3Api::class)
 class MainActivity : ComponentActivity() {
@@ -45,9 +48,11 @@ class MainActivity : ComponentActivity() {
 }
 
 */
+/*
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+         val database = FlashMemoDatabase.getDatabase(applicationContext)
         setContent {
             MaterialTheme {
                 // A surface container using the 'background' color from the theme
@@ -61,7 +66,47 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+*/
 
+/*
+@OptIn(ExperimentalMaterial3Api::class)
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java, "app-database"
+        ).build()
+        val viewModel: DataViewModel by viewModels { DataViewModelFactory(db.dataDao()) }
+
+        setContent {
+            MaterialTheme {
+                DataApp(viewModel)
+            }
+        }
+    }
+}
+*/
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val database = FlashMemoDatabase.getDatabase(applicationContext)
+
+        val flashcardViewModelFactory = FlashcardViewModelFactory(database.flashcardDao())
+        val categoryViewModelFactory = CategoryViewModelFactory(database.categoryDao())
+
+        setContent {
+            MaterialTheme {
+                navCenter(
+                		context=this,
+                    FlashcardViewModel = viewModel(factory = flashcardViewModelFactory),
+                    CategoryViewModel = viewModel(factory = categoryViewModelFactory)
+                )
+            }
+        }
+    }
+}
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
