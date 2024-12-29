@@ -60,11 +60,14 @@ fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardVi
     var numberList by remember {mutableStateOf(mutableListOf(1, 2, 3, 4, 5))}
     val categoryDataList by CategoryViewModel.dataList.collectAsState()
 		val flashcardDataList by FlashcardViewModel.dataList.collectAsState()
-		if(thisParentId!=0){
+		val parentCategory by CategoryViewModel.category.collectAsState()
 		FlashcardViewModel.loadAllData(thisParentId)
-		CategoryViewModel.loadCategory(thisParentId)
 		CategoryViewModel.loadAllData(thisParentId)
-		 val subCategory by CategoryViewModel.category.collectAsState()
+		if(parentId!=0){
+		
+		CategoryViewModel.loadCategory(parentId)
+		
+		 
 		}
     Scaffold(
     
@@ -91,7 +94,25 @@ fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardVi
         contentAlignment = Alignment.Center
     ){Column(
             horizontalAlignment = Alignment.CenterHorizontally
-        ){Button(onClick = { numberList.add(Random.nextInt(100));
+        ){
+        
+        if(parentId!=0){
+        Button(onClick = { navController.navigate("showAllDataPage/{id}/{parentId}".replace("{id}", parentCategory!!.id!!.toString()).replace("{parentId}", parentCategory!!.parentId!!.toString())
+                    
+                    ) }, modifier = Modifier.weight(1f)) {
+                       if (parentCategory!=null){Text("go back"+parentCategory!!.id.toString())
+                       }else{ Text("go back")}
+                    }//end button go back
+                    }else{
+                    
+                      Button(onClick = { navController.navigate("home") }, modifier = Modifier.weight(1f)) {
+                        Text("go home")
+                    }//end button go back
+                    
+                    }
+                    
+                    
+                    Button(onClick = { numberList.add(Random.nextInt(100));
        FlashcardViewModel.addData(name="sex"+Random.nextInt(100).toString(), description="argh",parentId=thisParentId) ;
        
         }, modifier = Modifier.weight(1f)) {
