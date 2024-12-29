@@ -21,18 +21,18 @@ interface FlashcardDao {
     suspend fun delete(item: Flashcard)
 
     @Query("SELECT * from flashcards WHERE id = :id")
-    fun getFlashcardDetail(id: Int): Flow<Flashcard>
+    fun getFlashcardDetail(id: Int): Flashcard
 
     @Query("SELECT * from flashcards WHERE parentId = :parentId ORDER BY name ASC")
-    fun getFlashcardsSortNameAsc(parentId: Int?): Flow<List<Flashcard>>
+    fun getFlashcardsSortNameAsc(parentId: Int): List<Flashcard>
 
     @Query("SELECT * from flashcards WHERE parentId = :parentId ORDER BY name DESC")
-    fun getFlashcardsSortNameDesc(parentId: Int?): Flow<List<Flashcard>>
+    fun getFlashcardsSortNameDesc(parentId: Int): List<Flashcard>
 
     @Query("SELECT * from flashcards WHERE parentId = :parentId ORDER BY frequency ASC")
-    fun getFlashcardsSortFrequencyAsc(parentId: Int?): Flow<List<Flashcard>>
+    fun getFlashcardsSortFrequencyAsc(parentId: Int): List<Flashcard>
 
     @Query("Select * from flashcards WHERE parentId = :parentId ORDER BY frequency DESC")
-    fun getFlashcardsSortFrequencyDesc(parentId: Int?): Flow<List<Flashcard>>
+    fun getFlashcardsSortFrequencyDesc(parentId: Int): List<Flashcard>
 
 }

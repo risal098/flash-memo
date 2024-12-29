@@ -21,18 +21,18 @@ interface CategoryDao {
     suspend fun delete(item: Category)
 
     @Query("SELECT * from categories WHERE id = :id")
-    fun getCategoryDetail(id: Int): Flow<Category>
+    fun getCategoryDetail(id: Int): Category
 
     @Query("SELECT * from categories WHERE parentId = :parentId ORDER BY name ASC")
-    fun getCategoriesSortNameAsc(parentId: Int?): Flow<List<Category>>
+    fun getCategoriesSortNameAsc(parentId: Int): List<Category>
 
     @Query("SELECT * from categories WHERE parentId = :parentId ORDER BY name DESC")
-    fun getCategoriesSortNameDesc(parentId: Int?): Flow<List<Category>>
+    fun getCategoriesSortNameDesc(parentId: Int): List<Category>
 
     @Query("SELECT * from categories WHERE parentId = :parentId ORDER BY frequency ASC")
-    fun getCategoriesSortFrequencyAsc(parentId: Int?): Flow<List<Category>>
+    fun getCategoriesSortFrequencyAsc(parentId: Int): List<Category>
 
     @Query("Select * from categories WHERE parentId = :parentId ORDER BY frequency DESC")
-    fun getCategoriesSortFrequencyDesc(parentId: Int?): Flow<List<Category>>
+    fun getCategoriesSortFrequencyDesc(parentId: Int): List<Category>
 
 }
