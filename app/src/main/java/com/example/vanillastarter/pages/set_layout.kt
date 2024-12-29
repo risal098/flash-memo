@@ -57,7 +57,7 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
                 painter = painterResource(id = imageRes!!),
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
-                alpha = 0.5F,
+//                alpha = 1F,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
