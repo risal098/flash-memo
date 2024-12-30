@@ -33,35 +33,56 @@
 //import androidx.compose.ui.unit.dp
 //import androidx.compose.ui.unit.sp
 //import com.example.vanillastarter.R
+//import com.example.vanillastarter.data.Flashcard
+//import com.example.vanillastarter.func.crudCategory
+//import com.example.vanillastarter.func.crudFlashcard
 //import com.wajahatkarim.flippable.FlipAnimationType
 //import com.wajahatkarim.flippable.Flippable
 //import com.wajahatkarim.flippable.rememberFlipController
 //
 //@Composable
 //fun BothCard(
-//    modifier: Modifier,
-//    judul: String,
-//    image: Int,
-//    desk: String
+////    modifier: Modifier,
+////    judul: String,
+////    image: Int,
+////    desk: String
+//    modifier: Modifier, judul:String, image: Int, desk:String,
+//    thisParentId:Int, item: Flashcard, FlashcardViewModel: crudFlashcard,
+//    CategoryViewModel: crudCategory
 //) {
 //    val flipController = rememberFlipController()
 //
-//    Flippable(
-//        flipController = flipController,
-//        flipOnTouch = true,
-//        flipAnimationType = FlipAnimationType.HORIZONTAL_CLOCKWISE,
-//        frontSide = {
-//            FrontCard(judul = judul, image = image, modifier = modifier)
-//        },
-//        backSide = {
-//            BackCard(modifier = modifier, image = image)
-//        },
-//        modifier = modifier
-//    )
+//    Box(
+//    ){
+//        Flippable(
+//            flipController = flipController,
+//            flipOnTouch = true,
+//            flipAnimationType = FlipAnimationType.HORIZONTAL_CLOCKWISE,
+//            frontSide = {
+////            FrontCard(judul = judul, image = image, modifier = modifier)
+//                FrontCard(judul = judul, image = image, modifier = modifier,
+//                    thisParentId=thisParentId,item=item,FlashcardViewModel= FlashcardViewModel,
+//                    CategoryViewModel=CategoryViewModel)
+//            },
+//            backSide = {
+////            BackCard(modifier = modifier, image = image)
+//                BackCard(desk = desk, modifier = modifier,
+//                    thisParentId=thisParentId,item=item,FlashcardViewModel= FlashcardViewModel,
+//                    CategoryViewModel=CategoryViewModel)
+//            },
+//            modifier = modifier
+//        )
+//        Box(
+//            modifier = Modifier.padding(3.dp).align(alignment = Alignment.TopEnd)
+//        ){
+//            Option1(onClickEdit = {  },
+//                onClickDelete = { FlashcardViewModel.deleteData(item,thisParentId) })
+//        }
+//    }
 //}
 //
 //@Composable
-//fun FrontCard(modifier: Modifier, image: Int, judul: String) {
+//fun FrontCard(modifier: Modifier, judul:String,image: Int, thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
 //    Box(
 //        contentAlignment = Alignment.Center,
 //        modifier = modifier
@@ -96,11 +117,15 @@
 //                    .padding(vertical = 15.dp)
 //            )
 //        }
+//
+//
 //    }
 //}
 //
 //@Composable
-//fun BackCard(modifier: Modifier, image: Int) {
+//fun BackCard(modifier: Modifier, desk:String,
+//             thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard,
+//             CategoryViewModel:crudCategory) {
 //    Column(
 //        verticalArrangement = Arrangement.Center,
 //        horizontalAlignment = Alignment.CenterHorizontally,
@@ -111,7 +136,7 @@
 //            )
 //    ) {
 //        Text(
-//            text = "DESK",
+//            text = desk,
 //            color = Color.White,
 //            fontSize = 12.sp,
 //            textAlign = TextAlign.Center,
@@ -125,7 +150,7 @@
 //
 //
 //@Composable
-//fun CardLayout(items: List<List<Any>>) {
+//fun CardLayout(items:List<Flashcard>,thisParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
 //    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 //    val itemWidth = (screenWidth / 2) - 25.dp
 //
@@ -146,10 +171,11 @@
 //                            .width(itemWidth)
 //                            .height(250.dp),
 //                        image = R.drawable.androidparty,
-//                        desk = "Coding adalah bla bla bla",
-//                        judul = "coding",
+//                        desk = item.description,
+//                        judul = item.name,
+//                        thisParentId=thisParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel
 //
-//                        )
+//                    )
 //                }
 //            }
 //            Spacer(modifier = Modifier.height(10.dp)) // Spacer after each row
@@ -158,13 +184,4 @@
 //}
 //
 //
-//@Preview
-//@Composable
-//fun PreviewCardLayout() {
-//    val items = listOf(
-//        listOf(R.drawable.androidparty, "Judul 1", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.lightPink, ),
-//        listOf(R.drawable.androidparty, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.purple),
-//        listOf(0, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.blue)
-//    )
-//    CardLayout(items)
-//}
+//
