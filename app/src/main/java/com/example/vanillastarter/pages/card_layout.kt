@@ -93,7 +93,7 @@ fun FrontCard(modifier: Modifier, image: Int){
             Text(
                 text = "CODING",
                 color = Color.White,
-                fontSize = 12.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -115,8 +115,7 @@ fun CardLayout(items: List<List<Any>>) {
     val itemWidth = (screenWidth / 2) - 25.dp
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         itemsIndexed(items.chunked(2)) { _, rowItems ->
@@ -125,9 +124,9 @@ fun CardLayout(items: List<List<Any>>) {
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 rowItems.forEach { item ->
-                    BackCard(modifier = Modifier
+                    FrontCard(modifier = Modifier
                         .width(itemWidth)
-                        .height(305.dp),
+                        .height(250.dp),
                         image = R.drawable.androidparty)
                 }
             }

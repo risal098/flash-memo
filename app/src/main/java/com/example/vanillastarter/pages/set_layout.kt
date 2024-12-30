@@ -112,8 +112,7 @@ fun ResponsiveGridLayout(items: List<List<Any>>) {
     val itemWidth = (screenWidth / 2) - 25.dp
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         itemsIndexed(items.chunked(2)) { _, rowItems ->
