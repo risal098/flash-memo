@@ -114,7 +114,7 @@ fun ButtonAdd(){
     Box(
         modifier = Modifier
             .background(
-                color = colorResource(R.color.teal),
+                color = colorResource(colorDict("purple")),
                 shape = RoundedCornerShape(100.dp)
             )
             .padding(20.dp)
