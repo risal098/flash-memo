@@ -23,9 +23,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.R
-
+import androidx.navigation.NavController
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.data.*
+import android.net.Uri
 @Composable
-fun TextFieldCard(){
+fun TextFieldCard(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
     var nama by remember { mutableStateOf(TextFieldValue("")) }
     var desk by remember { mutableStateOf(TextFieldValue("")) }
     var link by remember { mutableStateOf(TextFieldValue("")) }
@@ -95,7 +98,9 @@ fun TextFieldCard(){
                 colorResource(R.color.teal),
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
-                .clickable {  }
+                .clickable { 
+                FlashcardViewModel.addData(name=nama.text, description=desk.text,parentId=thisParentId,link=link.text)
+                navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString())) }
         ){
             Text(text = "Tambah", color = Color.White, fontSize = 24.sp)
         }

@@ -22,14 +22,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.example.vanillastarter.R
 import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
+import androidx.navigation.NavController
+import androidx.compose.foundation.clickable
 @Composable
-fun SmallButton(color: Int, text: String){
+fun SmallButton(color: Int, text: String,thisId:Int,thisParentId:Int,parentId:Int,navController: NavController,mode:Int){
     Box(
         modifier = Modifier
             .background(
                 color = colorResource(color),
                 shape = RoundedCornerShape(100.dp)
             ).padding(vertical = 5.dp)
+            .clickable { if(mode==0)
+            							{navController.navigate("addFlashcard/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisId.toString()).replace("{grandParentId}", thisParentId.toString())) }
+            							else
+            							{navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisId.toString()).replace("{grandParentId}", thisParentId.toString())) } }
     ){
         Text(
             text = text,
@@ -42,7 +48,7 @@ fun SmallButton(color: Int, text: String){
 }
 
 @Composable
-fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modifier = Modifier, color: Int) {
+fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modifier = Modifier, color: Int,thisId:Int,thisParentId:Int,parentId:Int,navController: NavController,item:Category,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
     Box(
         contentAlignment = Alignment.TopEnd,
         modifier = modifier.background(
@@ -103,9 +109,9 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
                 )
 
                 Spacer(modifier = Modifier.height(5.dp))
-                SmallButton(color = R.color.darkBlue, text = "Tambah Kartu")
+                SmallButton(color = R.color.darkBlue, text = "Tambah Kartu",thisId,thisParentId,parentId,navController,0)
                 Spacer(modifier = Modifier.height(5.dp))
-                SmallButton(color = R.color.teal, text = "Lihat Detail")
+                SmallButton(color = R.color.teal, text = "Lihat Detail",thisId,thisParentId,parentId,navController,1)
 
             }
 
@@ -116,13 +122,13 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
             modifier = Modifier.padding(3.dp)
         ){
             Option1(onClickEdit = {  },
-                onClickDelete = {  })
+                onClickDelete = { CategoryViewModel.deleteData(item,thisParentId) })
         }
     }
 }
 
 @Composable
-fun ResponsiveGridLayout(items: List<Category>) {
+fun ResponsiveGridLayout(items: List<Category>,thisParentId:Int,parentId:Int,navController: NavController,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
 
@@ -145,7 +151,8 @@ fun ResponsiveGridLayout(items: List<Category>) {
                         modifier = Modifier
                             .width(itemWidth)
                             .height(305.dp),
-                        color = R.color.blue
+                        color = R.color.blue,
+                        item.id!!,thisParentId,parentId,navController,item,FlashcardViewModel ,CategoryViewModel
                     )
                 }
             }

@@ -1,5 +1,5 @@
 package com.example.vanillastarter.pages
-
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -32,7 +32,7 @@ import androidx.navigation.NavController
 import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 @Composable
-fun LayoutAddCard(thisParentId:Int,parentId:Int){
+fun LayoutAddCard(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
@@ -87,7 +87,7 @@ fun LayoutAddCard(thisParentId:Int,parentId:Int){
 
                     ){
 
-                        TextFieldCard()
+                        TextFieldCard(navController,thisParentId,parentId,FlashcardViewModel ,CategoryViewModel,onPickImage,imageUri)
                     }
                 }
             }

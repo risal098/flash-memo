@@ -37,7 +37,7 @@ import androidx.navigation.NavController
 import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 @Composable
-fun BothCard(modifier: Modifier,onClick:()->Unit, judul:String,image: Int,desk:String, issFront:Boolean){
+fun BothCard(modifier: Modifier,onClick:()->Unit, judul:String,image: Int,desk:String, issFront:Boolean,thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory){
     var isFront = issFront
     Box (
         modifier.clickable {
@@ -50,7 +50,7 @@ fun BothCard(modifier: Modifier,onClick:()->Unit, judul:String,image: Int,desk:S
         }
     ){
         if(isFront){
-            FrontCard(judul = judul, image = image, modifier = modifier)
+            FrontCard(judul = judul, image = image, modifier = modifier,thisParentId=thisParentId,item=item,FlashcardViewModel= FlashcardViewModel,CategoryViewModel=CategoryViewModel)
         } else{
 //            BackCard(image = image)
         }
@@ -88,7 +88,7 @@ fun BackCard(modifier: Modifier, image: Int){
 }
 
 @Composable
-fun FrontCard(modifier: Modifier,image: Int, judul: String){
+fun FrontCard(modifier: Modifier,image: Int, judul: String,thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory){
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -116,7 +116,7 @@ fun FrontCard(modifier: Modifier,image: Int, judul: String){
 
         ) {
             Text(
-                text = "CODING",
+                text = judul,
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Medium,
@@ -135,14 +135,14 @@ fun FrontCard(modifier: Modifier,image: Int, judul: String){
             modifier = Modifier.padding(3.dp).align(alignment = Alignment.TopEnd)
         ){
             Option1(onClickEdit = {  },
-                onClickDelete = {  })
+                onClickDelete = { FlashcardViewModel.deleteData(item,thisParentId) })
         }
     }
 }
 
 
 @Composable
-fun CardLayout(items:List<Flashcard>) {
+fun CardLayout(items:List<Flashcard>,thisParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
 
@@ -167,7 +167,8 @@ fun CardLayout(items:List<Flashcard>) {
                         image = R.drawable.androidparty,
                         desk = item.description,
                         judul = item.name,
-                        issFront = true
+                        issFront = true	,
+                        thisParentId=thisParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel
                     )
                 }
             }

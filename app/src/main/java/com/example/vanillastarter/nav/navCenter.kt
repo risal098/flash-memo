@@ -30,14 +30,14 @@ fun navCenter(context: Context,FlashcardViewModel:crudFlashcard ,CategoryViewMod
    				  val id: Int? = idString?.toIntOrNull()
             val parentIdString = navBackStackEntry.arguments?.getString("grandParentId")
    				  val parentId: Int? = parentIdString?.toIntOrNull()
-   				  LayoutAddCard(id!!,parentId!!)
+   				  LayoutAddCard(navController, id!!,parentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
         }
         composable("addCategory/{thisParentId}/{grandParentId}"){navBackStackEntry ->
         		val idString = navBackStackEntry.arguments?.getString("thisParentId")
    				  val id: Int? = idString?.toIntOrNull()
             val parentIdString = navBackStackEntry.arguments?.getString("grandParentId")
    				  val parentId: Int? = parentIdString?.toIntOrNull()
-   				  LayoutAddSet(id!!,parentId!!)
+   				  LayoutAddSet(navController, id!!,parentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
         }
    }//end list
    

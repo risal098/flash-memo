@@ -17,13 +17,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.R
-
+import androidx.navigation.NavController
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.data.*
+import android.net.Uri
 @Composable
-fun TextFieldSet() {
+fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null) {
     // State untuk menyimpan teks dan warna yang dipilih
     var nama by remember { mutableStateOf(TextFieldValue("")) }
     var desk by remember { mutableStateOf(TextFieldValue("")) }
-    var link by remember { mutableStateOf(TextFieldValue("")) }
+    //var link by remember { mutableStateOf(TextFieldValue("")) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
     var selectedColor by remember { mutableStateOf(Color(0xffF7BDD4)) } // Warna default
 
@@ -75,7 +78,7 @@ fun TextFieldSet() {
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-
+/*
         Text(
             text = "Link",
             color = colorResource(R.color.greyTheme),
@@ -90,7 +93,7 @@ fun TextFieldSet() {
                 .background(color = colorResource(R.color.backgorundOne), shape = RoundedCornerShape(15.dp))
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))*/
 
         // Dropdown untuk memilih warna
         Box {
@@ -147,17 +150,13 @@ fun TextFieldSet() {
                 colorResource(R.color.teal),
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
+            .clickable {
+            CategoryViewModel.addData(name=nama.text,description=desk.text,parentId= thisParentId)
+            navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))  }
         ){
             Text(text = "Tambah", color = Color.White, fontSize = 24.sp)
         }
     }
 }
 
-@Preview
-@Composable
-fun PreviewTextFieldSet() {
 
-    TextFieldSet()
-//    LayoutAddSet()
-//    AddCardOrSet()
-}

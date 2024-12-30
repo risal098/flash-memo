@@ -188,7 +188,12 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
                         if(thisParentId==0){
                             TopBarAppFirst("Lorem", R.drawable.androidparty)
                         } else{
-                            TopBarAppOthers(grandParentCategory!!.name)
+                        if(grandParentCategory!=null){
+                            TopBarAppOthers("ipsum",parentId,grandParentCategory!!.parentId!!,navController)
+                            }else{
+                            TopBarAppOthers("home",0,0,navController)
+                            }
+//                            TopBarAppOthers(grandParentCategory!!.name)
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                         SearchBar(
@@ -212,11 +217,11 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
                         Spacer(modifier = Modifier.height(20.dp))
                         SubJudul("Set Kartu")
                         Spacer(modifier = Modifier.height(10.dp))
-                        ResponsiveGridLayout(categoryDataList)
+                        ResponsiveGridLayout(categoryDataList,thisParentId,parentId,navController,FlashcardViewModel ,CategoryViewModel)
                         Spacer(modifier = Modifier.height(20.dp))
                         SubJudul("Kartu")
                         Spacer(modifier = Modifier.height(10.dp))
-                        CardLayout(flashcardDataList)
+                        CardLayout(flashcardDataList,thisParentId,FlashcardViewModel ,CategoryViewModel)
                     }
                 }
             }
