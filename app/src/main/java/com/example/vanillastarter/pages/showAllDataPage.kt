@@ -1,6 +1,6 @@
 package com.example.vanillastarter.page
-
-
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -62,7 +62,7 @@ fun showAllDataPage(navController: NavController,selfId:Int,parentId:Int,Flashca
 fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null) {
     val stringList = listOf("One", "Two", "Three", "Four", "Five")
     var numberList by remember {mutableStateOf(mutableListOf(1, 2, 3, 4, 5))}
-    
+    val context = LocalContext.current
     val categoryDataList by CategoryViewModel.dataList.collectAsState() //list/set category
 		val flashcardDataList by FlashcardViewModel.dataList.collectAsState() // list/set flashcard
 		val grandParentCategory by CategoryViewModel.category.collectAsState() // object grandparent category
@@ -168,7 +168,7 @@ fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardVi
 
             // flashcard List
             items(flashcardDataList) { item ->
-                FlashcardBoxWithButtons(navController,item,FlashcardViewModel,CategoryViewModel,thisParentId)
+                FlashcardBoxWithButtons(navController,item,FlashcardViewModel,CategoryViewModel,thisParentId,context)
             }
           
             
@@ -177,7 +177,7 @@ fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardVi
 }
 
 @Composable
-fun FlashcardBoxWithButtons(navController: NavController,item: Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,thisParentId:Int) {
+fun FlashcardBoxWithButtons(navController: NavController,item: Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,thisParentId:Int,context:Context) {
     Box(
         modifier = Modifier
             .padding(8.dp)
@@ -220,8 +220,15 @@ fun FlashcardBoxWithButtons(navController: NavController,item: Flashcard,Flashca
                         Text("see")
                     }
                     Spacer(modifier = Modifier.width(4.dp))
-                    Button(onClick = { val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
-                                startActivity(LocalContext.current, intent, null) }, modifier = Modifier.weight(1f)) {
+                    Button(onClick =
+						               { 
+						              
+													val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+													context.startActivity(intent)
+						               }
+                    ,
+                     modifier = Modifier.weight(1f)) 
+                    {
                         Text("linking")
                     }
                 
