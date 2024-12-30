@@ -113,27 +113,32 @@ fun FrontCard(modifier: Modifier, image: Int){
 fun CardLayout(items: List<List<Any>>) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        itemsIndexed(items.chunked(2)) { _, rowItems ->
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        // Membagi item menjadi dua per baris (chunked(2))
+        val chunkedItems = items.chunked(2)
+
+        chunkedItems.forEach { rowItems ->
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 5.dp), // optional padding
+                horizontalArrangement = Arrangement.spacedBy(10.dp) // Spasi antar item
             ) {
                 rowItems.forEach { item ->
-                    FrontCard(modifier = Modifier
-                        .width(itemWidth)
-                        .height(250.dp),
-                        image = R.drawable.androidparty)
+                    FrontCard(
+                        modifier = Modifier
+                            .width(itemWidth)
+                            .height(250.dp),
+                        image = R.drawable.androidparty
+                    )
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp)) // Spacer after each row
         }
     }
 }
+
 
 @Preview
 @Composable

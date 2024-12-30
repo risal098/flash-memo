@@ -48,7 +48,7 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
         modifier = modifier
             .background(
                 color = colorResource(color),
-                shape = RoundedCornerShape(10.dp)
+                shape = RoundedCornerShape(20.dp)
             )
     ) {
         // Gambar dari drawable lokal
@@ -61,7 +61,7 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
-                    .clip(RoundedCornerShape(topStart = 10.dp, topEnd = 16.dp))
+                    .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
             )
         }
 
@@ -110,15 +110,17 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
 fun ResponsiveGridLayout(items: List<List<Any>>) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        itemsIndexed(items.chunked(2)) { _, rowItems ->
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        // Membagi item menjadi dua per baris (chunked(2))
+        val chunkedItems = items.chunked(2)
+
+        chunkedItems.forEach { rowItems ->
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 5.dp), // optional padding
+                horizontalArrangement = Arrangement.spacedBy(10.dp) // Spasi antar item
             ) {
                 rowItems.forEach { item ->
                     CustomBox(
@@ -129,11 +131,10 @@ fun ResponsiveGridLayout(items: List<List<Any>>) {
                             .width(itemWidth)
                             .height(305.dp),
                         color = item[3] as Int
-
                     )
                 }
             }
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp)) // Spacer after each row
         }
     }
 }
