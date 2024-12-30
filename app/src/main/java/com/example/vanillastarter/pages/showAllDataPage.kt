@@ -124,7 +124,7 @@ fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardVi
                     
                     
                     Button(onClick = { numberList.add(Random.nextInt(100));
-       FlashcardViewModel.addData(name="sex"+Random.nextInt(100).toString(), description="argh",parentId=thisParentId) ;
+       FlashcardViewModel.addData(name="sex"+Random.nextInt(100).toString(), description="argh",parentId=thisParentId,link="https://example.com/") ;
        
         }, modifier = Modifier.weight(1f)) {
                         Text("add card")
@@ -218,6 +218,11 @@ fun FlashcardBoxWithButtons(navController: NavController,item: Flashcard,Flashca
                     Spacer(modifier = Modifier.width(4.dp))
                     Button(onClick = { /* Do nothing */ }, modifier = Modifier.weight(1f)) {
                         Text("see")
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Button(onClick = { val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+                                startActivity(LocalContext.current, intent, null) }, modifier = Modifier.weight(1f)) {
+                        Text("linking")
                     }
                 
         }
