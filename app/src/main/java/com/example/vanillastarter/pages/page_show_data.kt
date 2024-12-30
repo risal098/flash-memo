@@ -48,66 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 //ini widget2, page ada di paling bawah
-
-
-@Composable
-fun TopBarAppFirst(name: String, image: Int) {
-    Row (
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
-    ){
-        Text("Hello $name!",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold)
-        Image(
-            painter = painterResource(id = image),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-//                alpha = 0F,
-            modifier = Modifier
-                .size(48.dp)
-                .clip(RoundedCornerShape(100.dp))
-        )
-    }
-}
-
-@Composable
-fun TopBarAppOthers(name: String){
-    Row (
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        Icon(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, contentDescription = "Localized description", modifier = Modifier.size(40.dp))
-        Text(name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-    }
-}
-
-@Composable
-fun FilterBox(modifier: Modifier){
-    Row (
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = colorResource(R.color.teal),
-                shape = RoundedCornerShape(100.dp)
-            )
-            .padding(vertical = 5.dp, horizontal = 20.dp)
-    ){
-        Text("Filter", color = colorResource(R.color.white))
-        Image(
-            painter = painterResource(id = R.drawable.green_filter),
-            contentDescription = null,
-            contentScale = ContentScale.Crop,
-//                alpha = 0F,
-            modifier = Modifier
-                .size(20.dp)
-        )
-
-    }
-}
-
 @Composable
 fun SubJudul(text: String){
     Text(
@@ -134,27 +74,7 @@ fun ButtonAdd(){
     }
 }
 
-@Composable
-fun AddCardOrSet(){
-    Column(
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(bottom = 72.dp)
-    ) {
-        Button(
-            onClick = { /* Action: Tambah Kartu */ },
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.darkBlue))
-        ) {
-            Text(text = "Tambah Kartu", fontSize = 16.sp, color = colorResource(id = R.color.white))
-        }
-        Button(
-            onClick = { /* Action: Tambah Set */ },
-            colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.teal))
-        ) {
-            Text(text = "Tambah Set", fontSize = 16.sp, color = colorResource(id = R.color.white))
-        }
-    }
-}
+
 //ini page nya
 @Composable
 fun Layout(first: Boolean, setName: String = ""){
