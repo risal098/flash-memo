@@ -33,7 +33,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.R
-
+import androidx.navigation.NavController
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.data.*
 @Composable
 fun BothCard(modifier: Modifier,onClick:()->Unit, judul:String,image: Int,desk:String, issFront:Boolean){
     var isFront = issFront
@@ -140,7 +142,7 @@ fun FrontCard(modifier: Modifier,image: Int, judul: String){
 
 
 @Composable
-fun CardLayout(items: List<List<Any>>) {
+fun CardLayout(items:List<Flashcard>) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
 
@@ -163,8 +165,8 @@ fun CardLayout(items: List<List<Any>>) {
                             .width(itemWidth)
                             .height(250.dp),
                         image = R.drawable.androidparty,
-                        desk = "Coding adalah bla bla bla",
-                        judul = "coding",
+                        desk = item.description,
+                        judul = item.name,
                         issFront = true
                     )
                 }
@@ -175,13 +177,3 @@ fun CardLayout(items: List<List<Any>>) {
 }
 
 
-@Preview
-@Composable
-fun PreviewCardLayout() {
-    val items = listOf(
-        listOf(R.drawable.androidparty, "Judul 1", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.lightPink, ),
-        listOf(R.drawable.androidparty, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.purple),
-        listOf(0, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.blue)
-    )
-    CardLayout(items)
-}

@@ -20,7 +20,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.vanillastarter.R
-
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.data.*
 @Composable
 fun SmallButton(color: Int, text: String){
     Box(
@@ -104,7 +105,7 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
                 Spacer(modifier = Modifier.height(5.dp))
                 SmallButton(color = R.color.darkBlue, text = "Tambah Kartu")
                 Spacer(modifier = Modifier.height(5.dp))
-                SmallButton(color = R.color.teal, text = "Tambah Kartu")
+                SmallButton(color = R.color.teal, text = "Lihat Detail")
 
             }
 
@@ -121,7 +122,7 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
 }
 
 @Composable
-fun ResponsiveGridLayout(items: List<List<Any>>) {
+fun ResponsiveGridLayout(items: List<Category>) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
 
@@ -138,13 +139,13 @@ fun ResponsiveGridLayout(items: List<List<Any>>) {
             ) {
                 rowItems.forEach { item ->
                     CustomBox(
-                        imageRes = item[0] as Int,
-                        title = item[1] as String,
-                        description = item[2] as String,
+                        imageRes = 0,
+                        title = item.name,
+                        description = item.description,
                         modifier = Modifier
                             .width(itemWidth)
                             .height(305.dp),
-                        color = item[3] as Int
+                        color = R.color.blue
                     )
                 }
             }
@@ -152,7 +153,7 @@ fun ResponsiveGridLayout(items: List<List<Any>>) {
         }
     }
 }
-
+/*
 @Preview
 @Composable
 fun PreviewResponsiveGridLayout() {
@@ -163,3 +164,5 @@ fun PreviewResponsiveGridLayout() {
     )
     ResponsiveGridLayout(items)
 }
+
+*/

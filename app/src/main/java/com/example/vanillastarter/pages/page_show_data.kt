@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+
 import com.example.vanillastarter.R
 
 import androidx.compose.foundation.layout.Row
@@ -34,16 +34,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+
+
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+
+
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.data.Category
@@ -51,7 +51,53 @@ import com.example.vanillastarter.shared.SortType
 import com.example.vanillastarter.ui.component.CategoryBanner
 import com.example.vanillastarter.ui.component.SearchBar
 import com.example.vanillastarter.ui.component.SortButton
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.lifecycle.ViewModel
+import androidx.activity.viewModels
+import androidx.lifecycle.viewModelScope 
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import androidx.compose.foundation.layout.* // For Modifier, dp, etc.
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Text // For Text composable, if used
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.data.*
+import kotlin.random.Random
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.*
+
+
+
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.Image
+import coil.compose.rememberImagePainter
 //ini widget2, page ada di paling bawah
 @Composable
 fun SubJudul(text: String){
@@ -79,10 +125,22 @@ fun ButtonAdd(){
     }
 }
 
-
+//first setname
 //ini page nya
 @Composable
-fun Layout(first: Boolean, setName: String = ""){
+fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
+  val context = LocalContext.current
+    val categoryDataList by CategoryViewModel.dataList.collectAsState() //list/set category
+		val flashcardDataList by FlashcardViewModel.dataList.collectAsState() // list/set flashcard
+		val grandParentCategory by CategoryViewModel.category.collectAsState() // object grandparent category
+		FlashcardViewModel.loadAllData(thisParentId) //render all ui and list set flash
+		CategoryViewModel.loadAllData(thisParentId) //render all ui and list set category
+		
+		if(parentId!=0){
+		
+		CategoryViewModel.loadCategory(parentId)
+		
+		 }
     val example = Category(
         id = 1,
         name = "Bahasa Belanda",
@@ -94,11 +152,6 @@ fun Layout(first: Boolean, setName: String = ""){
     )
     var searchQuery = ""
     val isAdding = remember { mutableStateOf(false) }
-    val items = listOf(
-        listOf(R.drawable.androidparty, "Judul 1", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.lightPink ),
-        listOf(R.drawable.androidparty, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.purple),
-        listOf(0, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.blue)
-    )
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     var selectedSortType = SortType.NAME_ASC
@@ -132,10 +185,10 @@ fun Layout(first: Boolean, setName: String = ""){
 
 
                     ) {
-                        if(first){
+                        if(thisParentId==0){
                             TopBarAppFirst("Lorem", R.drawable.androidparty)
                         } else{
-                            TopBarAppOthers(setName)
+                            TopBarAppOthers(grandParentCategory!!.name)
                         }
                         Spacer(modifier = Modifier.height(20.dp))
                         SearchBar(
@@ -150,7 +203,7 @@ fun Layout(first: Boolean, setName: String = ""){
                             onSortTypeSelected = { selectedSortType = it }
                         )
                         Spacer(modifier = Modifier.height(20.dp))
-                        if(first!=true){
+                        if(thisParentId!=0){
                             CategoryBanner(
                                 category = example,
                                 onClickPlay = {  }
@@ -159,11 +212,11 @@ fun Layout(first: Boolean, setName: String = ""){
                         Spacer(modifier = Modifier.height(20.dp))
                         SubJudul("Set Kartu")
                         Spacer(modifier = Modifier.height(10.dp))
-                        ResponsiveGridLayout(items)
+                        ResponsiveGridLayout(categoryDataList)
                         Spacer(modifier = Modifier.height(20.dp))
                         SubJudul("Kartu")
                         Spacer(modifier = Modifier.height(10.dp))
-                        CardLayout(items)
+                        CardLayout(flashcardDataList)
                     }
                 }
             }
@@ -176,7 +229,7 @@ fun Layout(first: Boolean, setName: String = ""){
                     .padding(30.dp)
             ){
                 if (isAdding.value) {
-                    AddCardOrSet()
+                    AddCardOrSet(navController,thisParentId,parentId)
                 } else {
                     Box(
                         modifier = Modifier
@@ -193,10 +246,4 @@ fun Layout(first: Boolean, setName: String = ""){
 
 
 
-@Preview
-@Composable
-fun PreviewPageAllData() {
 
-    Layout(first = false, "tech")
-//    AddCardOrSet()
-}

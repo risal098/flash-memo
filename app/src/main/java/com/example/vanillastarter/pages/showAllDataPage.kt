@@ -25,8 +25,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.vanillastarter.func.*
-import kotlin.random.Random
 import com.example.vanillastarter.data.*
+import kotlin.random.Random
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.background

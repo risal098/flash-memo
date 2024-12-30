@@ -28,9 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.R
-
+import androidx.navigation.NavController
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.data.*
 @Composable
-fun LayoutAddCard(){
+fun LayoutAddCard(thisParentId:Int,parentId:Int){
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
@@ -93,9 +95,4 @@ fun LayoutAddCard(){
     }
 }
 
-@Preview
-@Composable
-fun PreviewLayoutAddCard() {
-    LayoutAddCard()
-//    AddCardOrSet()
-}
+

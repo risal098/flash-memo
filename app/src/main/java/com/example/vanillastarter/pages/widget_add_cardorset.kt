@@ -13,25 +13,31 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.R
+import com.example.vanillastarter.func.*
+import com.example.vanillastarter.data.*
+import androidx.navigation.NavController
 
 @Composable
-fun AddCardOrSet(){
+fun AddCardOrSet(navController: NavController,thisParentId:Int,parentId:Int){
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(bottom = 72.dp)
     ) {
         Button(
-            onClick = { /* Action: Tambah Kartu */ },
+            onClick = { navController.navigate("addFlashcard/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))  },
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.darkBlue))
         ) {
             Text(text = "Tambah Kartu", fontSize = 16.sp, color = colorResource(id = R.color.white))
         }
         Button(
-            onClick = { /* Action: Tambah Set */ },
+            onClick = { navController.navigate("addCategory/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))  },
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.teal))
         ) {
             Text(text = "Tambah Set", fontSize = 16.sp, color = colorResource(id = R.color.white))
         }
     }
 }
+
+
+
