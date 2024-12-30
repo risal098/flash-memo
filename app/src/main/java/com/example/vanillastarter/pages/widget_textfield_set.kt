@@ -32,7 +32,10 @@ fun TextFieldSet() {
         "Pink" to colorResource(R.color.pink),
         "Green" to colorResource(R.color.green),
         "Blue" to colorResource(R.color.blue),
-        "Orange" to colorResource(R.color.orange)
+        "Orange" to colorResource(R.color.orange),
+        "Teal" to colorResource(R.color.lightTeal),
+        "Light Pink" to colorResource(R.color.lightPink),
+        "Purple" to colorResource(R.color.purple),
 
     )
 

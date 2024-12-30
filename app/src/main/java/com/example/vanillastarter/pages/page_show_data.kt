@@ -46,7 +46,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.vanillastarter.data.Category
 import com.example.vanillastarter.shared.SortType
+import com.example.vanillastarter.ui.component.CategoryBanner
 import com.example.vanillastarter.ui.component.SearchBar
 import com.example.vanillastarter.ui.component.SortButton
 
@@ -81,6 +83,15 @@ fun ButtonAdd(){
 //ini page nya
 @Composable
 fun Layout(first: Boolean, setName: String = ""){
+    val example = Category(
+        id = 1,
+        name = "Bahasa Belanda",
+        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...",
+        imagePath = R.drawable.card_image_example.toString(),
+        frequency = 1,
+        parentId = null,
+        backgroundColor = "#A6D3CE"
+    )
     var searchQuery = ""
     val isAdding = remember { mutableStateOf(false) }
     val items = listOf(
@@ -90,6 +101,7 @@ fun Layout(first: Boolean, setName: String = ""){
     )
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    var selectedSortType = SortType.NAME_ASC
     Scaffold (
         containerColor = colorResource(R.color.backgorundOne)
     ){
@@ -132,11 +144,18 @@ fun Layout(first: Boolean, setName: String = ""){
                         )
                         Spacer(modifier = Modifier.height(10.dp))
 //                        FilterBox(modifier = Modifier)
-                        var selectedSortType = SortType.NAME_ASC
+
 
                         SortButton(
                             onSortTypeSelected = { selectedSortType = it }
                         )
+                        Spacer(modifier = Modifier.height(20.dp))
+                        if(first!=true){
+                            CategoryBanner(
+                                category = example,
+                                onClickPlay = {  }
+                            )
+                        }
                         Spacer(modifier = Modifier.height(20.dp))
                         SubJudul("Set Kartu")
                         Spacer(modifier = Modifier.height(10.dp))
