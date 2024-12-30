@@ -171,8 +171,7 @@ fun Layout(first: Boolean, setName: String = ""){
         Box(
             modifier = Modifier
                 .padding(20.dp)
-                .height(screenHeight)
-                .width(screenWidth)
+                .fillMaxSize()
                 .background(color = colorResource(R.color.backgorundOne))
                 .then(
                     if (isAdding.value) {
@@ -183,30 +182,34 @@ fun Layout(first: Boolean, setName: String = ""){
                 )
         ){
 //Belum bisa disdiscroll
-            Column(
-                modifier = Modifier
-                    .width(screenWidth)
-                    .background(
-                        color = colorResource(R.color.backgorundOne)
-                    )
+            LazyColumn {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .width(screenWidth)
+                            .background(
+                                color = colorResource(R.color.backgorundOne)
+                            )
 
 
-            ) {
-                if(first){
-                    TopBarAppFirst("Lorem", R.drawable.androidparty)
-                } else{
-                    TopBarAppOthers(setName)
+                    ) {
+                        if(first){
+                            TopBarAppFirst("Lorem", R.drawable.androidparty)
+                        } else{
+                            TopBarAppOthers(setName)
+                        }
+                        Spacer(modifier = Modifier.height(20.dp))
+                        FilterBox(modifier = Modifier)
+                        Spacer(modifier = Modifier.height(20.dp))
+                        SubJudul("Set Kartu")
+                        Spacer(modifier = Modifier.height(10.dp))
+                        ResponsiveGridLayout(items)
+                        Spacer(modifier = Modifier.height(20.dp))
+                        SubJudul("Kartu")
+                        Spacer(modifier = Modifier.height(10.dp))
+                        CardLayout(items)
+                    }
                 }
-                Spacer(modifier = Modifier.height(20.dp))
-                FilterBox(modifier = Modifier)
-                Spacer(modifier = Modifier.height(20.dp))
-                SubJudul("Set Kartu")
-                Spacer(modifier = Modifier.height(10.dp))
-                ResponsiveGridLayout(items)
-                Spacer(modifier = Modifier.height(20.dp))
-                SubJudul("Kartu")
-                Spacer(modifier = Modifier.height(10.dp))
-                CardLayout(items)
             }
 
             Box(
