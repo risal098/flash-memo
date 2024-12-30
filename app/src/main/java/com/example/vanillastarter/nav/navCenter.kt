@@ -16,9 +16,9 @@ fun navCenter(context: Context,FlashcardViewModel:crudFlashcard ,CategoryViewMod
         }
         composable("showAllDataPage/{id}/{parentId}") { navBackStackEntry ->
             val idString = navBackStackEntry.arguments?.getString("id")
-    val id: Int? = idString?.toIntOrNull()
+   				  val id: Int? = idString?.toIntOrNull()
             val parentIdString = navBackStackEntry.arguments?.getString("parentId")
-    val parentId: Int? = parentIdString?.toIntOrNull()
+   				  val parentId: Int? = parentIdString?.toIntOrNull()
             showAllDataPage(navController, id!!,parentId!!,FlashcardViewModel,CategoryViewModel) 
         }
         
