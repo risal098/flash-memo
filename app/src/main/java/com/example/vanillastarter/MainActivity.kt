@@ -28,66 +28,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.vanillastarter.data.*
 import com.example.vanillastarter.func.*
 import com.example.vanillastarter.nav.navCenter
-/*
-@OptIn(ExperimentalMaterial3Api::class)
+import android.content.Intent
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "app-database"
-        ).build()
-        val viewModel: DataViewModel by viewModels { DataViewModelFactory(db.dataDao()) }
-
-        setContent {
-            MaterialTheme {
-                DataApp(viewModel)
-            }
-        }
-    }
-}
-
-*/
-/*
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-         val database = FlashMemoDatabase.getDatabase(applicationContext)
-        setContent {
-            MaterialTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
-            }
-        }
-    }
-}
-*/
-
-/*
-@OptIn(ExperimentalMaterial3Api::class)
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "app-database"
-        ).build()
-        val viewModel: DataViewModel by viewModels { DataViewModelFactory(db.dataDao()) }
-
-        setContent {
-            MaterialTheme {
-                DataApp(viewModel)
-            }
-        }
-    }
-}
-*/
-class MainActivity : ComponentActivity() {
+		 private val imageUri = mutableStateOf<Uri?>(null)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -95,30 +40,22 @@ class MainActivity : ComponentActivity() {
 
         val flashcardViewModelFactory = FlashcardViewModelFactory(database.flashcardDao())
         val categoryViewModelFactory = CategoryViewModelFactory(database.categoryDao())
-
+				val pickImageLauncher = registerForActivityResult(
+            ActivityResultContracts.GetContent()
+        ) { uri: Uri? ->
+            imageUri.value = uri
+        }
         setContent {
             MaterialTheme {
                 navCenter(
                 		context=this,
                     FlashcardViewModel = viewModel(factory = flashcardViewModelFactory),
-                    CategoryViewModel = viewModel(factory = categoryViewModelFactory)
+                    CategoryViewModel = viewModel(factory = categoryViewModelFactory),
+                    onPickImage = { pickImageLauncher.launch("image/*") },
+                    imageUri = imageUri.value
                 )
             }
         }
     }
 }
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello arggelarhhh $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    MaterialTheme {
-        Greeting("Android")
-    }
-}

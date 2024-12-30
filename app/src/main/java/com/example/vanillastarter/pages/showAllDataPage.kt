@@ -34,7 +34,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.*
-
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
@@ -42,20 +42,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.Image
+import coil.compose.rememberImagePainter
 @Composable
-fun showAllDataPage(navController: NavController,selfId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,subCategory:Category?=null){
+fun showAllDataPage(navController: NavController,selfId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
 
  Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyApp(navController, selfId,parentId,FlashcardViewModel,CategoryViewModel)
+                    MyApp(navController, selfId,parentId,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
                 }
 
 }
 
 @Composable
-fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,subCategory:Category?=null) {
+fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null) {
     val stringList = listOf("One", "Two", "Three", "Four", "Five")
     var numberList by remember {mutableStateOf(mutableListOf(1, 2, 3, 4, 5))}
     
@@ -73,7 +77,13 @@ fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardVi
     Scaffold(
     
         floatingActionButton = {
-            FloatingActionButton(onClick = { CategoryViewModel.addData(name="mimi",parentId= thisParentId)} ){
+            FloatingActionButton(onClick = {  onPickImage();
+            
+        if ( imageUri != null) {
+                    CategoryViewModel.addData(name="mimi",parentId= thisParentId,imagePath=imageUri.toString())
+                    
+                }else{
+            CategoryViewModel.addData(name="mimisan",parentId= thisParentId)}} ){
                 Text("+")
             }
         },
@@ -179,6 +189,13 @@ fun FlashcardBoxWithButtons(navController: NavController,item: Flashcard,Flashca
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+        
+       			 if(item.imagePath!=null){Image(
+                    painter = rememberImagePainter(data = Uri.parse(item.imagePath)),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp),
+                    contentScale = ContentScale.Crop
+                )}
             Text(
                 text = item.name+"id="+item.id.toString()+"parent"+item.parentId.toString(),
                 fontSize = 16.sp,
@@ -224,6 +241,12 @@ fun categoryBoxWithButtons(navController: NavController,item: Category,Flashcard
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+     		    if(item.imagePath!=null){Image(
+                    painter = rememberImagePainter(data = Uri.parse(item.imagePath)),
+                    contentDescription = null,
+                    modifier = Modifier.size(64.dp),
+                    contentScale = ContentScale.Crop
+                )}
             Text(
                 text = item.name+"id="+item.id.toString()+"parent"+item.parentId.toString(),
                 fontSize = 16.sp,
