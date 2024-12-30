@@ -51,8 +51,8 @@ fun SortButton(
             onClick = { expanded = true },
             colors = ButtonDefaults.buttonColors(containerColor = parseColor("#4DA1A9")),
             shape = RoundedCornerShape(50),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            modifier = Modifier.height(48.dp)
+            contentPadding = PaddingValues(horizontal = 20.dp, vertical = 5.dp),
+//            modifier = Modifier.height(25.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

@@ -46,6 +46,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.vanillastarter.shared.SortType
+import com.example.vanillastarter.ui.component.SearchBar
+import com.example.vanillastarter.ui.component.SortButton
 
 //ini widget2, page ada di paling bawah
 @Composable
@@ -78,6 +81,7 @@ fun ButtonAdd(){
 //ini page nya
 @Composable
 fun Layout(first: Boolean, setName: String = ""){
+    var searchQuery = ""
     val isAdding = remember { mutableStateOf(false) }
     val items = listOf(
         listOf(R.drawable.androidparty, "Judul 1", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.lightPink ),
@@ -86,7 +90,10 @@ fun Layout(first: Boolean, setName: String = ""){
     )
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    Scaffold {
+    Scaffold (
+        containerColor = colorResource(R.color.backgorundOne)
+    ){
+
         padding ->
         Box(
             modifier = Modifier
@@ -119,7 +126,17 @@ fun Layout(first: Boolean, setName: String = ""){
                             TopBarAppOthers(setName)
                         }
                         Spacer(modifier = Modifier.height(20.dp))
-                        FilterBox(modifier = Modifier)
+                        SearchBar(
+                            searchQuery = searchQuery,
+                            onInput = { searchQuery = it }
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+//                        FilterBox(modifier = Modifier)
+                        var selectedSortType = SortType.NAME_ASC
+
+                        SortButton(
+                            onSortTypeSelected = { selectedSortType = it }
+                        )
                         Spacer(modifier = Modifier.height(20.dp))
                         SubJudul("Set Kartu")
                         Spacer(modifier = Modifier.height(10.dp))

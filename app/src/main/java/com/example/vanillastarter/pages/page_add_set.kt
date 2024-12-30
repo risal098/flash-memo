@@ -99,6 +99,7 @@ fun LayoutAddSet(){
 
             Text(
                 text = "TAMBAH SET",
+                lineHeight = 50.sp,
                 fontSize = 48.sp,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.width(screenWidth*2/3)
@@ -122,7 +123,8 @@ fun LayoutAddSet(){
                             ).padding(top = 20.dp, start = 20.dp, end = 20.dp)
 
                     ){
-                        AddImageBox(onClick = { }, false)
+
+                        TextFieldSet()
                     }
                 }
             }

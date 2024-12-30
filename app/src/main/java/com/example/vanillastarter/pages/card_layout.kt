@@ -2,6 +2,7 @@ package com.example.vanillastarter.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +35,27 @@ import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.R
 
 @Composable
+fun BothCard(modifier: Modifier,onClick:()->Unit, judul:String,image: Int,desk:String, issFront:Boolean){
+    var isFront = issFront
+    Box (
+        modifier.clickable {
+            onClick
+            if(isFront){
+                isFront = false
+            } else{
+                isFront = true
+            }
+        }
+    ){
+        if(isFront){
+            FrontCard(judul = judul, image = image, modifier = modifier)
+        } else{
+//            BackCard(image = image)
+        }
+    }
+}
+
+@Composable
 fun BackCard(modifier: Modifier, image: Int){
     Column (
         verticalArrangement = Arrangement.Center,
@@ -64,8 +86,9 @@ fun BackCard(modifier: Modifier, image: Int){
 }
 
 @Composable
-fun FrontCard(modifier: Modifier, image: Int){
+fun FrontCard(modifier: Modifier,image: Int, judul: String){
     Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
             .background(
                 color = colorResource(R.color.darkBlue),
@@ -87,7 +110,7 @@ fun FrontCard(modifier: Modifier, image: Int){
         Column (
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+
 
         ) {
             Text(
@@ -105,6 +128,13 @@ fun FrontCard(modifier: Modifier, image: Int){
 
                 )
         }
+
+        Box(
+            modifier = Modifier.padding(3.dp).align(alignment = Alignment.TopEnd)
+        ){
+            Option1(onClickEdit = {  },
+                onClickDelete = {  })
+        }
     }
 }
 
@@ -115,7 +145,6 @@ fun CardLayout(items: List<List<Any>>) {
     val itemWidth = (screenWidth / 2) - 25.dp
 
     Column(modifier = Modifier.fillMaxSize()) {
-        // Membagi item menjadi dua per baris (chunked(2))
         val chunkedItems = items.chunked(2)
 
         chunkedItems.forEach { rowItems ->
@@ -126,11 +155,17 @@ fun CardLayout(items: List<List<Any>>) {
                 horizontalArrangement = Arrangement.spacedBy(10.dp) // Spasi antar item
             ) {
                 rowItems.forEach { item ->
-                    FrontCard(
+
+                    BothCard(
+                        onClick = {
+                        },
                         modifier = Modifier
                             .width(itemWidth)
                             .height(250.dp),
-                        image = R.drawable.androidparty
+                        image = R.drawable.androidparty,
+                        desk = "Coding adalah bla bla bla",
+                        judul = "coding",
+                        issFront = true
                     )
                 }
             }
@@ -144,7 +179,7 @@ fun CardLayout(items: List<List<Any>>) {
 @Composable
 fun PreviewCardLayout() {
     val items = listOf(
-        listOf(R.drawable.androidparty, "Judul 1", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.lightPink ),
+        listOf(R.drawable.androidparty, "Judul 1", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.lightPink, ),
         listOf(R.drawable.androidparty, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.purple),
         listOf(0, "Ini Judul 2", "Loremdo eiusmem ipsum dolor sit asmem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...", R.color.blue)
     )

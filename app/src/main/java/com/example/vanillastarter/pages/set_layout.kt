@@ -3,8 +3,6 @@ package com.example.vanillastarter.pages
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -44,64 +42,80 @@ fun SmallButton(color: Int, text: String){
 
 @Composable
 fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modifier = Modifier, color: Int) {
-    Column(
-        modifier = modifier
-            .background(
-                color = colorResource(color),
-                shape = RoundedCornerShape(20.dp)
-            )
-    ) {
-        // Gambar dari drawable lokal
-        if(imageRes != 0){
-            Image(
-                painter = painterResource(id = imageRes!!),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
+    Box(
+        contentAlignment = Alignment.TopEnd,
+        modifier = modifier.background(
+            color = colorResource(color),
+            shape = RoundedCornerShape(20.dp)
+        )
+
+    ){
+        Column(
+
+        ) {
+            // Gambar dari drawable lokal
+            if(imageRes != 0){
+                Image(
+                    painter = painterResource(id = imageRes!!),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
 //                alpha = 1F,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-                    .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
-            )
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .clip(RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp))
+                )
+            }else{
+                Spacer(Modifier.height(28.dp))
+            }
+
+            Column (
+                modifier = Modifier.padding(horizontal = 10.dp)
+            ){
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Judul
+                Text(
+                    text = title,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(1.dp))
+
+                // Deskripsi
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = colorResource(R.color.greyTheme),
+                    textAlign = TextAlign.Center,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = if (imageRes != 0) {
+                        Modifier.fillMaxWidth().height(100.dp)
+                    } else {
+                        Modifier.fillMaxWidth().height(170.dp)
+                    }
+                )
+
+                Spacer(modifier = Modifier.height(5.dp))
+                SmallButton(color = R.color.darkBlue, text = "Tambah Kartu")
+                Spacer(modifier = Modifier.height(5.dp))
+                SmallButton(color = R.color.teal, text = "Tambah Kartu")
+
+            }
+
+
         }
 
-        Column (
-            modifier = Modifier.padding(horizontal = 10.dp)
+        Box(
+            modifier = Modifier.padding(3.dp)
         ){
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Judul
-            Text(
-                text = title,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                style = MaterialTheme.typography.titleMedium,
-                color = Color.Black,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(1.dp))
-
-            // Deskripsi
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodySmall,
-                color = colorResource(R.color.greyTheme),
-                textAlign = TextAlign.Center,
-                overflow = TextOverflow.Ellipsis,
-                modifier = if (imageRes != 0) {
-                    Modifier.fillMaxWidth().height(100.dp)
-                } else {
-                    Modifier.fillMaxWidth().height(200.dp)
-                }
-            )
-
-            Spacer(modifier = Modifier.height(5.dp))
-            SmallButton(color = R.color.darkBlue, text = "Tambah Kartu")
-            Spacer(modifier = Modifier.height(5.dp))
-            SmallButton(color = R.color.teal, text = "Tambah Kartu")
-
+            Option1(onClickEdit = {  },
+                onClickDelete = {  })
         }
     }
 }
