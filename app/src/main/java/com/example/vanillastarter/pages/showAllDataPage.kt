@@ -58,11 +58,12 @@ fun showAllDataPage(navController: NavController,selfId:Int,parentId:Int,Flashca
 fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,subCategory:Category?=null) {
     val stringList = listOf("One", "Two", "Three", "Four", "Five")
     var numberList by remember {mutableStateOf(mutableListOf(1, 2, 3, 4, 5))}
-    val categoryDataList by CategoryViewModel.dataList.collectAsState()
-		val flashcardDataList by FlashcardViewModel.dataList.collectAsState()
-		val parentCategory by CategoryViewModel.category.collectAsState()
-		FlashcardViewModel.loadAllData(thisParentId)
-		CategoryViewModel.loadAllData(thisParentId)
+    
+    val categoryDataList by CategoryViewModel.dataList.collectAsState() //list/set category
+		val flashcardDataList by FlashcardViewModel.dataList.collectAsState() // list/set flashcard
+		val grandParentCategory by CategoryViewModel.category.collectAsState() // object grandparent category
+		FlashcardViewModel.loadAllData(thisParentId) //render all ui and list set flash
+		CategoryViewModel.loadAllData(thisParentId) //render all ui and list set category
 		if(parentId!=0){
 		
 		CategoryViewModel.loadCategory(parentId)
@@ -97,10 +98,10 @@ fun MyApp(navController: NavController,thisParentId:Int,parentId:Int,FlashcardVi
         ){
         
         if(parentId!=0){
-        Button(onClick = { navController.navigate("showAllDataPage/{id}/{parentId}".replace("{id}", parentCategory!!.id!!.toString()).replace("{parentId}", parentCategory!!.parentId!!.toString())
+        Button(onClick = { navController.navigate("showAllDataPage/{id}/{parentId}".replace("{id}", grandParentCategory!!.id!!.toString()).replace("{parentId}", grandParentCategory!!.parentId!!.toString())
                     
                     ) }, modifier = Modifier.weight(1f)) {
-                       if (parentCategory!=null){Text("go back"+parentCategory!!.id.toString())
+                       if (grandParentCategory!=null){Text("go back"+grandParentCategory!!.id.toString())
                        }else{ Text("go back")}
                     }//end button go back
                     }else{
@@ -189,7 +190,7 @@ fun FlashcardBoxWithButtons(navController: NavController,item: Flashcard,Flashca
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Button(onClick = { /* Do nothing */ }, modifier = Modifier.weight(1f)) {
+                Button(onClick = {FlashcardViewModel.updateData(item.copy(name = "sux"+Random.nextInt(100).toString()),thisParentId) }, modifier = Modifier.weight(1f)) {
                     Text("Update")
                 }
                 Spacer(modifier = Modifier.width(4.dp))
