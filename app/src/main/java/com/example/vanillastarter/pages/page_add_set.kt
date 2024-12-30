@@ -33,41 +33,6 @@ import androidx.compose.ui.unit.sp
 import com.example.vanillastarter.R
 
 
-
-@Composable
-fun AddImageBox(onClick: ()->Unit, isPictureAdded: Boolean){
-    Box(
-        modifier = Modifier.background(
-            color = colorResource(R.color.lightGrey),
-            shape = RoundedCornerShape(20.dp)
-        ).fillMaxWidth().height(179.dp).
-        clickable (){ onClick }
-    ){
-        Image(
-            painter = painterResource(id = R.drawable.add_image),
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-
-            modifier = Modifier
-                .size(78.dp)
-                .align(Alignment.Center)
-
-        )
-        if (isPictureAdded){
-            Image(
-                painter = painterResource(id = R.drawable.androidparty),
-                contentDescription = null,
-                contentScale = ContentScale.Crop,
-
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center)
-                    .clip(RoundedCornerShape(20.dp))
-            )
-        }
-    }
-}
-
 @Composable
 fun LayoutAddSet(){
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
