@@ -76,6 +76,7 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
             loadAllData(parentId)
         }
     }
+    //disini lim
 }
 
 
@@ -140,6 +141,7 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
             loadAllData(parentId)
         }
     }
+    //disini lim
 }
 
 
