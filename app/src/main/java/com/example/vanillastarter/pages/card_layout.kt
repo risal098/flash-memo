@@ -1,5 +1,6 @@
 package com.example.vanillastarter.pages
-
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,7 +50,7 @@ import com.example.vanillastarter.func.crudFlashcard
 import com.wajahatkarim.flippable.FlipAnimationType
 import com.wajahatkarim.flippable.Flippable
 import com.wajahatkarim.flippable.rememberFlipController
-
+import androidx.compose.ui.platform.LocalContext
 @Composable
 fun ButtonLink(color: Int, text: String, onClick: ()->Unit){
     Box(
@@ -59,7 +60,7 @@ fun ButtonLink(color: Int, text: String, onClick: ()->Unit){
                 shape = RoundedCornerShape(100.dp)
             ).padding(vertical = 5.dp)
             .clickable {
-                onClick
+                onClick()
             }
     ){
         Text(
@@ -159,6 +160,8 @@ fun FrontCard(modifier: Modifier, judul:String,image: Int, thisParentId:Int,item
 fun BackCard(modifier: Modifier, desk:String = "TEST",
              thisParentId:Int = 0,item:Flashcard,FlashcardViewModel:crudFlashcard,
              CategoryViewModel:crudCategory) {
+             val context = LocalContext.current
+
     Column(
 
         verticalArrangement = Arrangement.Center,
@@ -194,7 +197,9 @@ fun BackCard(modifier: Modifier, desk:String = "TEST",
             )
         }
 
-        ButtonLink(color = R.color.teal, onClick = {}, text = "Link" )
+        ButtonLink(color = R.color.teal, onClick = {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+context.startActivity(intent)}, text = "Link" )
     }
 }
 
