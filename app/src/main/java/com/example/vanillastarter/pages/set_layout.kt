@@ -151,7 +151,7 @@ fun ResponsiveGridLayout(items: List<Category>,thisParentId:Int,parentId:Int,nav
                         modifier = Modifier
                             .width(itemWidth)
                             .height(305.dp),
-                        color = R.color.blue,
+                        color = colorDict(item.backgroundColor),
                         item.id!!,thisParentId,parentId,navController,item,FlashcardViewModel ,CategoryViewModel
                     )
                 }

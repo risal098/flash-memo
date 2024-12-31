@@ -22,13 +22,16 @@ import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 import android.net.Uri
 @Composable
-fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null) {
+fun TextFieldEditSet(
+    judul: String, desk: String, link: String, color: String,
+//    navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null
+) {
     // State untuk menyimpan teks dan warna yang dipilih
-    var nama by remember { mutableStateOf(TextFieldValue("")) }
-    var desk by remember { mutableStateOf(TextFieldValue("")) }
-    var link by remember { mutableStateOf(TextFieldValue("")) }
+    var nama by remember { mutableStateOf(TextFieldValue(judul)) }
+    var desk by remember { mutableStateOf(TextFieldValue(desk)) }
+    var link by remember { mutableStateOf(TextFieldValue(link)) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
-    var selectedColor by remember { mutableStateOf("pink") } // Warna default
+    var selectedColor by remember { mutableStateOf(color) } // Warna default
 
     // Opsi warna yang disediakan aplikasi
     val colorOptions = listOf(
@@ -40,7 +43,7 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
         "light Pink" to colorResource(R.color.lightPink),
         "purple" to colorResource(R.color.purple),
 
-    )
+        )
 
     Column(
         modifier = Modifier
@@ -51,7 +54,7 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
         Text(
             text = "Nama Set",
             color = colorResource(R.color.greyTheme),
-            )
+        )
         OutlinedTextField(
             maxLines = 1,
             value = nama,
@@ -91,22 +94,22 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
                 .background(color = colorResource(R.color.backgorundOne), shape = RoundedCornerShape(15.dp))
         )
         Spacer(modifier = Modifier.height(16.dp))
-/*
-        Text(
-            text = "Link",
-            color = colorResource(R.color.greyTheme),
-        )
-        OutlinedTextField(
-            value = link,
-            maxLines = 1,
-            onValueChange = { link = it },
-//            label = { Text("Enter text") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = colorResource(R.color.backgorundOne), shape = RoundedCornerShape(15.dp))
-        )
+        /*
+                Text(
+                    text = "Link",
+                    color = colorResource(R.color.greyTheme),
+                )
+                OutlinedTextField(
+                    value = link,
+                    maxLines = 1,
+                    onValueChange = { link = it },
+        //            label = { Text("Enter text") },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(color = colorResource(R.color.backgorundOne), shape = RoundedCornerShape(15.dp))
+                )
 
-        Spacer(modifier = Modifier.height(16.dp))*/
+                Spacer(modifier = Modifier.height(16.dp))*/
 
         // Dropdown untuk memilih warna
         Box {
@@ -126,10 +129,10 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
-                    Text(text = "pilih warna set", color = colorResource(R.color.greyTheme))
+                    Text(text = color, color = colorResource(R.color.greyTheme))
                     Box(
                         modifier = Modifier.background(
-                         color = colorResource(colorDict(selectedColor)),
+                            color = colorResource(colorDict(selectedColor)),
                             shape = RoundedCornerShape(100.dp)
                         ).size(20.dp)
                     ){
@@ -163,13 +166,16 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
                 colorResource(R.color.teal),
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
-            .clickable {
-            CategoryViewModel.addData(name=nama.text,description=desk.text,parentId= thisParentId, backgroundColor = selectedColor, )
-            navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))  }
+                .clickable {
+//                    CategoryViewModel.addData(name=nama.text,description=desk.text,parentId= thisParentId, backgroundColor = selectedColor, )
+//                    navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))
+                }
         ){
             Text(text = "Tambah", color = Color.White, fontSize = 24.sp)
         }
     }
 }
+
+
 
 

@@ -27,5 +27,5 @@ val colorMap = hashMapOf(
 )
 
 
-return colorMap[colorName] ?: R.color.white
+return colorMap[colorName] ?: R.color.pink
 }

@@ -97,6 +97,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import coil.compose.rememberImagePainter
 //ini widget2, page ada di paling bawah
 @Composable
@@ -114,7 +120,7 @@ fun ButtonAdd(){
     Box(
         modifier = Modifier
             .background(
-                color = colorResource(colorDict("purple")),
+                color = colorResource(colorDict("teal")),
                 shape = RoundedCornerShape(100.dp)
             )
             .padding(20.dp)
@@ -135,11 +141,11 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
 		val grandParentCategory by CategoryViewModel.category.collectAsState() // object grandparent category
 		FlashcardViewModel.loadAllData(thisParentId) //render all ui and list set flash
 		CategoryViewModel.loadAllData(thisParentId) //render all ui and list set category
-		
+
 		if(parentId!=0){
-		
+
 		CategoryViewModel.loadCategory(parentId)
-		
+
 		 }
     val example = Category(
         id = 1,
@@ -155,8 +161,19 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     var selectedSortType = SortType.NAME_ASC
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                return Offset.Zero
+            }
+        }
+    }
+
     Scaffold (
-        containerColor = colorResource(R.color.backgorundOne)
+        containerColor = colorResource(R.color.backgorundOne),
+
+
     ){
 
         padding ->
@@ -174,56 +191,54 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
                 )
         ){
 //Belum bisa disdiscroll
-            LazyColumn {
-                item {
-                    Column(
-                        modifier = Modifier
-                            .width(screenWidth)
-                            .background(
-                                color = colorResource(R.color.backgorundOne)
-                            )
+            Column(
+                modifier = Modifier
+                    .width(screenWidth)
+                    .nestedScroll(nestedScrollConnection)
+                    .verticalScroll(rememberScrollState())
+                    .background(
+                        color = colorResource(R.color.backgorundOne)
+                    )
 
 
-                    ) {
-                        if(thisParentId==0){
-                            TopBarAppFirst("Lorem", R.drawable.androidparty)
-                        } else{
-                        if(grandParentCategory!=null){
-                            TopBarAppOthers("ipsum",parentId,grandParentCategory!!.parentId!!,navController)
-                            }else{
-                            TopBarAppOthers("home",0,0,navController)
-                            }
+            ) {
+                if(thisParentId==0){
+                    TopBarAppFirst("Lorem", R.drawable.androidparty)
+                } else{
+                    if(grandParentCategory!=null){
+                        TopBarAppOthers("ipsum",parentId,grandParentCategory!!.parentId!!,navController)
+                    }else{
+                        TopBarAppOthers("home",0,0,navController)
+                    }
 //                            TopBarAppOthers(grandParentCategory!!.name)
-                        }
-                        Spacer(modifier = Modifier.height(20.dp))
-                        SearchBar(
-                            searchQuery = searchQuery,
-                            onInput = { searchQuery = it }
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
+                }
+                Spacer(modifier = Modifier.height(20.dp))
+                SearchBar(
+                    searchQuery = searchQuery,
+                    onInput = { searchQuery = it }
+                )
+                Spacer(modifier = Modifier.height(10.dp))
 //                        FilterBox(modifier = Modifier)
 
 
-                        SortButton(
-                            onSortTypeSelected = { selectedSortType = it }
-                        )
-                        Spacer(modifier = Modifier.height(20.dp))
-                        if(thisParentId!=0){
-                            CategoryBanner(
-                                category = example,
-                                onClickPlay = {  }
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(20.dp))
-                        SubJudul("Set Kartu")
-                        Spacer(modifier = Modifier.height(10.dp))
-                        ResponsiveGridLayout(categoryDataList,thisParentId,parentId,navController,FlashcardViewModel ,CategoryViewModel)
-                        Spacer(modifier = Modifier.height(20.dp))
-                        SubJudul("Kartu")
-                        Spacer(modifier = Modifier.height(10.dp))
-                        CardLayout(flashcardDataList,thisParentId,FlashcardViewModel ,CategoryViewModel)
-                    }
+                SortButton(
+                    onSortTypeSelected = { selectedSortType = it }
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                if(thisParentId!=0){
+                    CategoryBanner(
+                        category = example,
+                        onClickPlay = {  }
+                    )
                 }
+                Spacer(modifier = Modifier.height(20.dp))
+                SubJudul("Set Kartu")
+                Spacer(modifier = Modifier.height(10.dp))
+                ResponsiveGridLayout(categoryDataList,thisParentId,parentId,navController,FlashcardViewModel ,CategoryViewModel)
+                Spacer(modifier = Modifier.height(20.dp))
+                SubJudul("Kartu")
+                Spacer(modifier = Modifier.height(10.dp))
+                CardLayout(flashcardDataList,thisParentId,FlashcardViewModel ,CategoryViewModel)
             }
 
             Box(
