@@ -52,8 +52,13 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
             _flashcard.value = dao.getFlashcardDetail(id)
         }
     }
+    fun nullFlashcard() {
+        viewModelScope.launch {
+            _flashcard.value = null
+        }
+    }
 
-    fun addData(name: String, description: String="",imagePath: String?=null,frequency: Int=0,parentId: Int,backgroundColor: String="",link:String?=null ) {
+    fun addData(name: String, description: String="",imagePath: String?=null,frequency: Int=0,parentId: Int,backgroundColor: String="",link:String?="" ) {
         viewModelScope.launch {
             dao.insert(Flashcard(name=name, description=description,imagePath=imagePath,frequency=frequency,parentId=parentId,link=link,backgroundColor=backgroundColor))
             loadAllData(parentId)
@@ -106,6 +111,8 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
     val dataList: StateFlow<List<Category>> get() = _dataList.asStateFlow()
     private val _category = MutableStateFlow<Category?>(null) // Store a single Flashcard, initially null
     val category: StateFlow<Category?> get()= _category.asStateFlow() // Expose as read-only StateFlow
+    private val _thisCategory = MutableStateFlow<Category?>(null) // Store a single Flashcard, initially null
+    val thisCategory: StateFlow<Category?> get()= _thisCategory.asStateFlow() // Expose as read-only StateFlow
 
     init {
         loadAllData(0)
@@ -121,6 +128,22 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
             _category.value = dao.getCategoryDetail(id)
         }
     }
+     fun nullCategory() {
+        viewModelScope.launch {
+            _category.value = null
+        }
+    }
+    fun loadThisCategory(id: Int) {
+        viewModelScope.launch {
+            _thisCategory.value = dao.getCategoryDetail(id)
+        }
+    }
+     fun nullThisCategory() {
+        viewModelScope.launch {
+            _thisCategory.value = null
+        }
+    }
+    
     
 /* val id: Int = 0,
     val name: String,

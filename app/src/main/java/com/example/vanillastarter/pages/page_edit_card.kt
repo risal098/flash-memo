@@ -32,15 +32,18 @@ import com.example.vanillastarter.R
 import androidx.navigation.NavController
 import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import androidx.compose.runtime.*
 @Composable
 
 fun LayoutEditCard(
-    textNama: String, textDesk: String, textLink: String,
-    navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null
+    navController: NavController,thisId:Int,parentId:Int,grandParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null
 ){
+		val flashcard by FlashcardViewModel.flashcard.collectAsState()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-
+		FlashcardViewModel.loadFlashcard(thisId)
     Scaffold {
             padding ->
 
@@ -91,8 +94,8 @@ fun LayoutEditCard(
                             ).padding(top = 20.dp, start = 20.dp, end = 20.dp)
 
                     ){
-
-                        TextFieldEditCard(textDesk, textDesk, textLink, navController,thisParentId,parentId,FlashcardViewModel ,CategoryViewModel,onPickImage,imageUri)
+											if (flashcard!=null){
+                        TextFieldEditCard(flashcard!!, navController,parentId,grandParentId,FlashcardViewModel ,CategoryViewModel,onPickImage,imageUri)}
                     }
                 }
             }

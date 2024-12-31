@@ -21,7 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.example.vanillastarter.R
 import com.example.vanillastarter.data.Category
 import com.example.vanillastarter.utils.parseColor
-
+import com.example.vanillastarter.data.*
+import androidx.compose.ui.graphics.Color
 @Composable
 fun CategoryBanner(
     category: Category,
@@ -34,7 +35,7 @@ fun CategoryBanner(
     ) {
         Box(
             modifier = Modifier
-                .background(parseColor(category.backgroundColor))
+                .background(color=parseColor(category.backgroundColor))
                 .heightIn(min = 130.dp)
         ) {
             Column(

@@ -1,5 +1,6 @@
 package com.example.vanillastarter.pages
-
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,7 +51,7 @@ import com.example.vanillastarter.func.crudFlashcard
 import com.wajahatkarim.flippable.FlipAnimationType
 import com.wajahatkarim.flippable.Flippable
 import com.wajahatkarim.flippable.rememberFlipController
-
+import androidx.compose.ui.platform.LocalContext
 @Composable
 fun ButtonLink(color: Int, text: String, onClick: ()->Unit){
     Box(
@@ -60,7 +61,7 @@ fun ButtonLink(color: Int, text: String, onClick: ()->Unit){
                 shape = RoundedCornerShape(100.dp)
             ).padding(vertical = 5.dp)
             .clickable {
-                onClick
+                onClick()
             }
     ){
         Text(
@@ -79,8 +80,9 @@ fun BothCard(
 //    judul: String,
 //    image: Int,
 //    desk: String
+navController: NavController,
     modifier: Modifier, judul:String, image: Int, desk:String,
-    thisParentId:Int, item: Flashcard, FlashcardViewModel: crudFlashcard,
+    thisParentId:Int, grandParentId:Int,item: Flashcard, FlashcardViewModel: crudFlashcard,
     CategoryViewModel: crudCategory
 ) {
     val flipController = rememberFlipController()
@@ -108,7 +110,7 @@ fun BothCard(
         Box(
             modifier = Modifier.padding(3.dp).align(alignment = Alignment.TopEnd)
         ){
-            Option1(onClickEdit = {  },
+            Option1(onClickEdit = { navController.navigate("editFlashcard/{thisId}/{thisParentId}/{grandParentId}".replace("{thisId}", item.id!!.toString()).replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", grandParentId.toString())) },
                 onClickDelete = { FlashcardViewModel.deleteData(item,thisParentId) })
         }
     }
@@ -159,6 +161,8 @@ fun FrontCard(modifier: Modifier, judul:String,image: Int, thisParentId:Int,item
 fun BackCard(modifier: Modifier, desk:String = "TEST",
              thisParentId:Int = 0,item:Flashcard,FlashcardViewModel:crudFlashcard,
              CategoryViewModel:crudCategory) {
+             val context = LocalContext.current
+
     Column(
 
         verticalArrangement = Arrangement.Center,
@@ -194,7 +198,9 @@ fun BackCard(modifier: Modifier, desk:String = "TEST",
             )
         }
 
-        ButtonLink(color = R.color.teal, onClick = {}, text = "Link" )
+        ButtonLink(color = R.color.teal, onClick = {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+context.startActivity(intent)}, text = "Link" )
     }
 }
 
@@ -215,7 +221,7 @@ fun liat(){
 
 
 @Composable
-fun CardLayout(items:List<Flashcard>,thisParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
+fun CardLayout(navController: NavController,items:List<Flashcard>,thisParentId:Int,grandParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
 
@@ -233,14 +239,14 @@ fun CardLayout(items:List<Flashcard>,thisParentId:Int,FlashcardViewModel:crudFla
             ) {
                 rowItems.forEach { item ->
 
-                    BothCard(
+                    BothCard(navController,
                         modifier = Modifier
                             .width(itemWidth)
                             .height(250.dp),
                         image = R.drawable.androidparty,
                         desk = item.description,
                         judul = item.name,
-                        thisParentId=thisParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel
+                        thisParentId=thisParentId,grandParentId=grandParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel
 
                     )
                 }

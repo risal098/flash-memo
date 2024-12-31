@@ -32,7 +32,7 @@ import androidx.navigation.NavController
 import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 @Composable
-fun LayoutAddCard(navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
+fun LayoutAddCard(navController: NavController,thisParentId:Int,parentId:Int,grandParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
 
@@ -87,7 +87,7 @@ fun LayoutAddCard(navController: NavController,thisParentId:Int,parentId:Int,Fla
 
                     ){
 
-                        TextFieldCard(navController,thisParentId,parentId,FlashcardViewModel ,CategoryViewModel,onPickImage,imageUri)
+                        TextFieldCard(navController,thisParentId,parentId,grandParentId,FlashcardViewModel ,CategoryViewModel,onPickImage,imageUri)
                     }
                 }
             }
