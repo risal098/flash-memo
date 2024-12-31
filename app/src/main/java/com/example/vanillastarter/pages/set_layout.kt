@@ -24,6 +24,8 @@ import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 import androidx.navigation.NavController
 import androidx.compose.foundation.clickable
+import coil3.compose.rememberAsyncImagePainter
+
 @Composable
 fun SmallButton(color: Int, text: String,thisId:Int,thisParentId:Int,parentId:Int,navController: NavController,mode:Int){
     Box(
@@ -48,7 +50,7 @@ fun SmallButton(color: Int, text: String,thisId:Int,thisParentId:Int,parentId:In
 }
 
 @Composable
-fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modifier = Modifier, color: Int,thisId:Int,thisParentId:Int,parentId:Int,navController: NavController,item:Category,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
+fun CustomBox(imageRes: String?, title: String, description: String, modifier: Modifier = Modifier, color: Int,thisId:Int,thisParentId:Int,parentId:Int,navController: NavController,item:Category,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
     Box(
         contentAlignment = Alignment.TopEnd,
         modifier = modifier.background(
@@ -61,10 +63,10 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
 
         ) {
             // Gambar dari drawable lokal
-            if(imageRes != 0){
+            if(imageRes != null){
                 Image(
-                    painter = painterResource(id = imageRes!!),
-                    contentDescription = null,
+                    painter = rememberAsyncImagePainter(model = imageRes),
+                    contentDescription = "Image Display",
                     contentScale = ContentScale.Crop,
 //                alpha = 1F,
                     modifier = Modifier
@@ -101,7 +103,7 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
                     color = colorResource(R.color.greyTheme),
                     textAlign = TextAlign.Center,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = if (imageRes != 0) {
+                    modifier = if (imageRes != null) {
                         Modifier.fillMaxWidth().height(100.dp)
                     } else {
                         Modifier.fillMaxWidth().height(170.dp)
@@ -145,7 +147,7 @@ fun ResponsiveGridLayout(items: List<Category>,thisParentId:Int,parentId:Int,nav
             ) {
                 rowItems.forEach { item ->
                     CustomBox(
-                        imageRes = 0,
+                        imageRes = item.imagePath,
                         title = item.name,
                         description = item.description,
                         modifier = Modifier

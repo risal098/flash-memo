@@ -33,6 +33,7 @@ fun TextFieldEditCard(item:Flashcard,
     navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
     var nama by remember { mutableStateOf(TextFieldValue(item.name)) }
     var desk by remember { mutableStateOf(TextFieldValue(item.description)) }
+    val imagePath = remember { mutableStateOf<String?>(null) }
     var link by remember { mutableStateOf(TextFieldValue(item.link!!)) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
 
@@ -41,7 +42,11 @@ fun TextFieldEditCard(item:Flashcard,
         modifier = Modifier
             .fillMaxWidth(),
     ) {
-        AddImageBox(onClick = { }, false)
+        AddImageBox(
+            onClick = { },
+            isPictureAdded = imagePath != null,
+            imagePath = imagePath
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Judul",
@@ -102,7 +107,7 @@ fun TextFieldEditCard(item:Flashcard,
             ).height(60.dp)
                 .clickable {
 //                    FlashcardViewModel.u(name=nama.text, description=desk.text,parentId=thisParentId,link=link.text)
-										FlashcardViewModel.updateData(item.copy(name=nama.text,description=desk.text,link=link.text),thisParentId)
+										FlashcardViewModel.updateData(item.copy(name=nama.text,description=desk.text,link=link.text, imagePath = imagePath.value),thisParentId)
 										FlashcardViewModel.nullFlashcard()
                     navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString())) }
         ){

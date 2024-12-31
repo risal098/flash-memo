@@ -52,6 +52,8 @@ import com.wajahatkarim.flippable.FlipAnimationType
 import com.wajahatkarim.flippable.Flippable
 import com.wajahatkarim.flippable.rememberFlipController
 import androidx.compose.ui.platform.LocalContext
+import coil3.compose.rememberAsyncImagePainter
+
 @Composable
 fun ButtonLink(color: Int, text: String, onClick: ()->Unit){
     Box(
@@ -81,7 +83,7 @@ fun BothCard(
 //    image: Int,
 //    desk: String
 navController: NavController,
-    modifier: Modifier, judul:String, image: Int, desk:String,
+    modifier: Modifier, judul:String, image: String?, desk:String,
     thisParentId:Int, grandParentId:Int,item: Flashcard, FlashcardViewModel: crudFlashcard,
     CategoryViewModel: crudCategory
 ) {
@@ -117,7 +119,7 @@ navController: NavController,
 }
 
 @Composable
-fun FrontCard(modifier: Modifier, judul:String,image: Int, thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
+fun FrontCard(modifier: Modifier, judul:String,image: String?, thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
@@ -126,10 +128,10 @@ fun FrontCard(modifier: Modifier, judul:String,image: Int, thisParentId:Int,item
                 shape = RoundedCornerShape(20.dp)
             )
     ) {
-        if (image != 0) {
+        if (image != null) {
             Image(
-                painter = painterResource(id = image),
-                contentDescription = null,
+                painter = rememberAsyncImagePainter(model = image),
+                contentDescription = "Image Display",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
@@ -243,7 +245,7 @@ fun CardLayout(navController: NavController,items:List<Flashcard>,thisParentId:I
                         modifier = Modifier
                             .width(itemWidth)
                             .height(250.dp),
-                        image = R.drawable.androidparty,
+                        image = item.imagePath,
                         desk = item.description,
                         judul = item.name,
                         thisParentId=thisParentId,grandParentId=grandParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel

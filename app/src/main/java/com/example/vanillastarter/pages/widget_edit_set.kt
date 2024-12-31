@@ -27,6 +27,7 @@ fun TextFieldEditSet(item:Category,
     // State untuk menyimpan teks dan warna yang dipilih
     var nama by remember { mutableStateOf(TextFieldValue(item.name)) }
     var desk by remember { mutableStateOf(TextFieldValue(item.description)) }
+    val imagePath = remember { mutableStateOf<String?>(null) }
     //var link by remember { mutableStateOf(TextFieldValue(item.link)) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
     var selectedColor by remember { mutableStateOf("pink") } // Warna default
@@ -47,7 +48,11 @@ fun TextFieldEditSet(item:Category,
         modifier = Modifier
             .fillMaxWidth(),
     ) {
-        AddImageBox(onClick = { }, false)
+        AddImageBox(
+            onClick = { },
+            isPictureAdded = imagePath != null,
+            imagePath = imagePath
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Nama Set",
@@ -152,7 +157,7 @@ fun TextFieldEditSet(item:Category,
                 colorResource(R.color.teal),
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
-                .clickable {CategoryViewModel.updateData(item.copy(name=nama.text,description=desk.text,backgroundColor=selectedColor),thisParentId)
+                .clickable {CategoryViewModel.updateData(item.copy(name=nama.text,description=desk.text,backgroundColor=selectedColor, imagePath = imagePath.value),thisParentId)
                CategoryViewModel. nullCategory()
                 navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))
                  }
