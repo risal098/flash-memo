@@ -152,7 +152,7 @@ fun TextFieldEditSet(item:Category,
                 colorResource(R.color.teal),
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
-                .clickable {CategoryViewModel.updateData(item.copy(name=nama.text,description=desk.text),thisParentId)
+                .clickable {CategoryViewModel.updateData(item.copy(name=nama.text,description=desk.text,backgroundColor=selectedColor),thisParentId)
                CategoryViewModel. nullCategory()
                 navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))
                  }
