@@ -10,6 +10,8 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.vanillastarter.utils.parseColor
 
@@ -20,10 +22,14 @@ fun SearchBar(
 ) {
     OutlinedTextField(
         value = searchQuery,
-        onValueChange = { onInput },
+        onValueChange = onInput,
         placeholder = { Text("Search") },
         shape = RoundedCornerShape(50),
-        colors = OutlinedTextFieldDefaults.colors(parseColor("#E4E4E4")),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.Black,
+            unfocusedTextColor = Color.Black,
+            focusedContainerColor = parseColor("#E4E4E4")
+        ),
         trailingIcon = { Icon(Icons.Filled.Search, contentDescription = "Search") },
         modifier = Modifier.fillMaxWidth()
     )

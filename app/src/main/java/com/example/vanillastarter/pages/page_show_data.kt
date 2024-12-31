@@ -96,6 +96,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.ui.geometry.Offset
@@ -139,8 +140,6 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
     val categoryDataList by CategoryViewModel.dataList.collectAsState() //list/set category
 		val flashcardDataList by FlashcardViewModel.dataList.collectAsState() // list/set flashcard
 		val grandParentCategory by CategoryViewModel.category.collectAsState() // object grandparent category
-		FlashcardViewModel.loadAllData(thisParentId) //render all ui and list set flash
-		CategoryViewModel.loadAllData(thisParentId) //render all ui and list set category
 
 		if(parentId!=0){
 
@@ -156,11 +155,27 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
         parentId = null,
         backgroundColor = "#A6D3CE"
     )
-    var searchQuery = ""
+    var searchQuery by remember { mutableStateOf("") }
     val isAdding = remember { mutableStateOf(false) }
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    var selectedSortType = SortType.NAME_ASC
+    var selectedSortType by remember { mutableStateOf(SortType.NAME_ASC) }
+
+    // Trigger loading whenever `selectedSortType` changes
+    LaunchedEffect(selectedSortType) {
+        Log.d("Layout", "Data List before Sort: $flashcardDataList")
+
+        FlashcardViewModel.loadDataBySort(thisParentId, selectedSortType)
+        CategoryViewModel.loadDataBySort(thisParentId, selectedSortType)
+    }
+
+    // Filter based on the search query
+    val filteredCategories = remember(searchQuery, categoryDataList) {
+        categoryDataList.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
+    val filteredFlashcards = remember(searchQuery, flashcardDataList) {
+        flashcardDataList.filter { it.name.contains(searchQuery, ignoreCase = true) }
+    }
 
     val nestedScrollConnection = remember {
         object : NestedScrollConnection {
@@ -231,14 +246,15 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
                         onClickPlay = {  }
                     )
                 }
+
                 Spacer(modifier = Modifier.height(20.dp))
                 SubJudul("Set Kartu")
                 Spacer(modifier = Modifier.height(10.dp))
-                ResponsiveGridLayout(categoryDataList,thisParentId,parentId,navController,FlashcardViewModel ,CategoryViewModel)
+                ResponsiveGridLayout(filteredCategories,thisParentId,parentId,navController,FlashcardViewModel ,CategoryViewModel)
                 Spacer(modifier = Modifier.height(20.dp))
                 SubJudul("Kartu")
                 Spacer(modifier = Modifier.height(10.dp))
-                CardLayout(flashcardDataList,thisParentId,FlashcardViewModel ,CategoryViewModel)
+                CardLayout(filteredFlashcards,thisParentId,FlashcardViewModel ,CategoryViewModel)
             }
 
             Box(

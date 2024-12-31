@@ -1,5 +1,6 @@
 package com.example.vanillastarter.pages
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -219,6 +220,8 @@ fun CardLayout(items:List<Flashcard>,thisParentId:Int,FlashcardViewModel:crudFla
     val itemWidth = (screenWidth / 2) - 25.dp
 
     Column(modifier = Modifier.fillMaxSize()) {
+        Log.d("CardLayout", "FlashcardList: $items")
+
         val chunkedItems = items.chunked(2)
 
         chunkedItems.forEach { rowItems ->

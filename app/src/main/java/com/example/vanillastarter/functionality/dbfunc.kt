@@ -4,6 +4,7 @@ import com.example.vanillastarter.data.Flashcard
 import com.example.vanillastarter.data.CategoryDao 
 import com.example.vanillastarter.data.Category
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -25,7 +26,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Text // For Text composable, if used
 import androidx.compose.runtime.Composable // If you are using composables in MainActivity
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalGraphicsContext
 import androidx.compose.ui.unit.dp
+import com.example.vanillastarter.shared.SortType
 import kotlinx.coroutines.flow.*
 
 
@@ -76,7 +79,20 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
             loadAllData(parentId)
         }
     }
-    //disini lim
+
+    fun loadDataBySort(parentId: Int, sortType: SortType) {
+        viewModelScope.launch {
+            val sortedList = when (sortType) {
+                SortType.NAME_ASC -> dao.getFlashcardsSortNameAsc(parentId)
+                SortType.NAME_DESC -> dao.getFlashcardsSortNameDesc(parentId)
+                SortType.FREQUENCY_ASC -> dao.getFlashcardsSortFrequencyAsc(parentId)
+                SortType.FREQUENCY_DESC -> dao.getFlashcardsSortFrequencyDesc(parentId)
+            }
+            Log.d("ViewModel", "sortedList = $sortedList")
+
+            _dataList.value = sortedList
+        }
+    }
 }
 
 
@@ -141,7 +157,18 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
             loadAllData(parentId)
         }
     }
-    //disini lim
+
+    fun loadDataBySort(parentId: Int, sortType: SortType) {
+        viewModelScope.launch {
+            val sortedList= when (sortType) {
+                SortType.NAME_ASC -> dao.getCategoriesSortNameAsc(parentId)
+                SortType.NAME_DESC -> dao.getCategoriesSortNameDesc(parentId)
+                SortType.FREQUENCY_ASC -> dao.getCategoriesSortFrequencyAsc(parentId)
+                SortType.FREQUENCY_DESC -> dao.getCategoriesSortFrequencyDesc(parentId)
+            }
+            _dataList.value = sortedList
+        }
+    }
 }
 
 
