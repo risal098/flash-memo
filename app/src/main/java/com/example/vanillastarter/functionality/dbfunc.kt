@@ -95,6 +95,8 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
     val dataList: StateFlow<List<Category>> get() = _dataList.asStateFlow()
     private val _category = MutableStateFlow<Category?>(null) // Store a single Flashcard, initially null
     val category: StateFlow<Category?> get()= _category.asStateFlow() // Expose as read-only StateFlow
+    private val _thisCategory = MutableStateFlow<Category?>(null) // Store a single Flashcard, initially null
+    val thisCategory: StateFlow<Category?> get()= _thisCategory.asStateFlow() // Expose as read-only StateFlow
 
     init {
         loadAllData(0)
@@ -113,6 +115,16 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
      fun nullCategory() {
         viewModelScope.launch {
             _category.value = null
+        }
+    }
+    fun loadThisCategory(id: Int) {
+        viewModelScope.launch {
+            _thisCategory.value = dao.getCategoryDetail(id)
+        }
+    }
+     fun nullThisCategory() {
+        viewModelScope.launch {
+            _thisCategory.value = null
         }
     }
     

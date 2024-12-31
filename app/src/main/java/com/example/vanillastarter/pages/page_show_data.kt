@@ -139,6 +139,7 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
     val categoryDataList by CategoryViewModel.dataList.collectAsState() //list/set category
 		val flashcardDataList by FlashcardViewModel.dataList.collectAsState() // list/set flashcard
 		val grandParentCategory by CategoryViewModel.category.collectAsState() // object grandparent category
+		val thisCategory by CategoryViewModel.thisCategory.collectAsState()
 		FlashcardViewModel.loadAllData(thisParentId) //render all ui and list set flash
 		CategoryViewModel.loadAllData(thisParentId) //render all ui and list set category
 
@@ -149,10 +150,17 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
 		 }else{
 		 CategoryViewModel.nullCategory()
 		 }
+		 if(thisParentId!=0){
+
+		CategoryViewModel.loadThisCategory(thisParentId)
+
+		 }else{
+		 CategoryViewModel.nullThisCategory()
+		 }
     val example = Category(
         id = 1,
         name = "Bahasa Belanda",
-        description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore...",
+        description = "Loading...",
         imagePath = R.drawable.card_image_example.toString(),
         frequency = 1,
         parentId = null,
@@ -227,9 +235,9 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
                     onSortTypeSelected = { selectedSortType = it }
                 )
                 Spacer(modifier = Modifier.height(20.dp))
-                if(thisParentId!=0){
+                if(thisCategory!=null){
                     CategoryBanner(
-                        category = example,
+                        category = thisCategory,
                         onClickPlay = {  }
                     )
                 }
