@@ -33,118 +33,110 @@
 //import androidx.compose.ui.unit.dp
 //import androidx.compose.ui.unit.sp
 //import com.example.vanillastarter.R
-//import com.example.vanillastarter.data.Flashcard
-//import com.example.vanillastarter.func.crudCategory
-//import com.example.vanillastarter.func.crudFlashcard
-//import com.wajahatkarim.flippable.FlipAnimationType
-//import com.wajahatkarim.flippable.Flippable
-//import com.wajahatkarim.flippable.rememberFlipController
-//
+//import androidx.navigation.NavController
+//import com.example.vanillastarter.func.*
+//import com.example.vanillastarter.data.*
 //@Composable
-//fun BothCard(
-////    modifier: Modifier,
-////    judul: String,
-////    image: Int,
-////    desk: String
-//    modifier: Modifier, judul:String, image: Int, desk:String,
-//    thisParentId:Int, item: Flashcard, FlashcardViewModel: crudFlashcard,
-//    CategoryViewModel: crudCategory
-//) {
-//    val flipController = rememberFlipController()
-//
-//    Box(
+//fun BothCard(modifier: Modifier,onClick:()->Unit, judul:String,image: Int,desk:String, issFront:Boolean,thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory){
+//    var isFront = issFront
+//    Box (
+//        modifier.clickable {
+//            onClick
+//            if(isFront){
+//                isFront = false
+//            } else{
+//                isFront = true
+//            }
+//        }
 //    ){
-//        Flippable(
-//            flipController = flipController,
-//            flipOnTouch = true,
-//            flipAnimationType = FlipAnimationType.HORIZONTAL_CLOCKWISE,
-//            frontSide = {
-////            FrontCard(judul = judul, image = image, modifier = modifier)
-//                FrontCard(judul = judul, image = image, modifier = modifier,
-//                    thisParentId=thisParentId,item=item,FlashcardViewModel= FlashcardViewModel,
-//                    CategoryViewModel=CategoryViewModel)
-//            },
-//            backSide = {
-////            BackCard(modifier = modifier, image = image)
-//                BackCard(desk = desk, modifier = modifier,
-//                    thisParentId=thisParentId,item=item,FlashcardViewModel= FlashcardViewModel,
-//                    CategoryViewModel=CategoryViewModel)
-//            },
-//            modifier = modifier
-//        )
-//        Box(
-//            modifier = Modifier.padding(3.dp).align(alignment = Alignment.TopEnd)
-//        ){
-//            Option1(onClickEdit = {  },
-//                onClickDelete = { FlashcardViewModel.deleteData(item,thisParentId) })
+//        if(isFront){
+//            FrontCard(judul = judul, image = image, modifier = modifier,thisParentId=thisParentId,item=item,FlashcardViewModel= FlashcardViewModel,CategoryViewModel=CategoryViewModel)
+//        } else{
+////            BackCard(image = image)
 //        }
 //    }
 //}
 //
 //@Composable
-//fun FrontCard(modifier: Modifier, judul:String,image: Int, thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
+//fun BackCard(modifier: Modifier, image: Int){
+//    Column (
+//        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        modifier = modifier
+//            .background(
+//                color = colorResource(R.color.darkBlue),
+//                shape = RoundedCornerShape(20.dp),
+//
+//                )
+//
+//    ) {
+//        Text(
+//            text = "CODING",
+//            color = Color.White,
+//            fontSize = 12.sp,
+//
+//            textAlign = TextAlign.Center,
+//            modifier = Modifier.fillMaxWidth()
+//                .background(
+//                    color = colorResource(R.color.darkBlue).copy(alpha = 0.8f)
+//                )
+//                .padding(vertical = 15.dp),
+//
+//
+//            )
+//    }
+//}
+//
+//@Composable
+//fun FrontCard(modifier: Modifier,image: Int, judul: String,thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory){
 //    Box(
 //        contentAlignment = Alignment.Center,
 //        modifier = modifier
 //            .background(
 //                color = colorResource(R.color.darkBlue),
-//                shape = RoundedCornerShape(20.dp)
-//            )
-//    ) {
-//        if (image != 0) {
+//                shape = RoundedCornerShape(20.dp),
+//
+//                )
+//    ){
+//        if(image!=0){
 //            Image(
 //                painter = painterResource(id = image),
 //                contentDescription = null,
 //                contentScale = ContentScale.Crop,
+////                alpha = 0F,
 //                modifier = Modifier
 //                    .fillMaxSize()
 //                    .clip(RoundedCornerShape(20.dp))
 //            )
 //        }
-//        Column(
+//        Column (
 //            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//
+//
+//            ) {
 //            Text(
 //                text = judul,
 //                color = Color.White,
 //                fontSize = 20.sp,
 //                fontWeight = FontWeight.Medium,
 //                textAlign = TextAlign.Center,
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .background(color = colorResource(R.color.darkBlue).copy(alpha = 0.8f))
-//                    .padding(vertical = 15.dp)
-//            )
+//                modifier = Modifier.fillMaxWidth()
+//                    .background(
+//                        color = colorResource(R.color.darkBlue).copy(alpha = 0.8f)
+//                    )
+//                    .padding(vertical = 15.dp),
+//
+//
+//                )
 //        }
 //
-//
-//    }
-//}
-//
-//@Composable
-//fun BackCard(modifier: Modifier, desk:String,
-//             thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard,
-//             CategoryViewModel:crudCategory) {
-//    Column(
-//        verticalArrangement = Arrangement.Center,
-//        horizontalAlignment = Alignment.CenterHorizontally,
-//        modifier = modifier
-//            .background(
-//                color = colorResource(R.color.darkBlue),
-//                shape = RoundedCornerShape(20.dp)
-//            )
-//    ) {
-//        Text(
-//            text = desk,
-//            color = Color.White,
-//            fontSize = 12.sp,
-//            textAlign = TextAlign.Center,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .background(color = colorResource(R.color.darkBlue).copy(alpha = 0.8f))
-//                .padding(vertical = 15.dp)
-//        )
+//        Box(
+//            modifier = Modifier.padding(3.dp).align(alignment = Alignment.TopEnd)
+//        ){
+//            Option1(onClickEdit = {  },
+//                onClickDelete = { FlashcardViewModel.deleteData(item,thisParentId) })
+//        }
 //    }
 //}
 //
@@ -167,14 +159,16 @@
 //                rowItems.forEach { item ->
 //
 //                    BothCard(
+//                        onClick = {
+//                        },
 //                        modifier = Modifier
 //                            .width(itemWidth)
 //                            .height(250.dp),
 //                        image = R.drawable.androidparty,
 //                        desk = item.description,
 //                        judul = item.name,
+//                        issFront = true	,
 //                        thisParentId=thisParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel
-//
 //                    )
 //                }
 //            }
@@ -182,6 +176,4 @@
 //        }
 //    }
 //}
-//
-//
 //

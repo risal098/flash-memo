@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.vanillastarter.R
 import com.example.vanillastarter.data.Flashcard
 import com.example.vanillastarter.func.crudCategory
@@ -39,6 +41,28 @@ import com.example.vanillastarter.func.crudFlashcard
 import com.wajahatkarim.flippable.FlipAnimationType
 import com.wajahatkarim.flippable.Flippable
 import com.wajahatkarim.flippable.rememberFlipController
+
+@Composable
+fun ButtonLink(color: Int, text: String, onClick: ()->Unit){
+    Box(
+        modifier = Modifier
+            .background(
+                color = colorResource(color),
+                shape = RoundedCornerShape(100.dp)
+            ).padding(vertical = 5.dp)
+            .clickable {
+                onClick
+            }
+    ){
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodySmall,
+            color = colorResource(R.color.white),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
 
 @Composable
 fun BothCard(
@@ -123,8 +147,8 @@ fun FrontCard(modifier: Modifier, judul:String,image: Int, thisParentId:Int,item
 }
 
 @Composable
-fun BackCard(modifier: Modifier, desk:String,
-             thisParentId:Int,item:Flashcard,FlashcardViewModel:crudFlashcard,
+fun BackCard(modifier: Modifier, desk:String = "TEST",
+             thisParentId:Int = 0,item:Flashcard,FlashcardViewModel:crudFlashcard,
              CategoryViewModel:crudCategory) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -133,20 +157,44 @@ fun BackCard(modifier: Modifier, desk:String,
             .background(
                 color = colorResource(R.color.darkBlue),
                 shape = RoundedCornerShape(20.dp)
-            )
+            ).padding(10.dp)
     ) {
-        Text(
-            text = desk,
-            color = Color.White,
-            fontSize = 12.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = colorResource(R.color.darkBlue).copy(alpha = 0.8f))
-                .padding(vertical = 15.dp)
-        )
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.height(190.dp),
+
+            ){
+            Text(
+                text = desk,
+                color = Color.White,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(color = colorResource(R.color.darkBlue).copy(alpha = 0.8f))
+                    .padding(vertical = 15.dp)
+
+            )
+        }
+
+        ButtonLink(color = R.color.teal, onClick = {}, text = "Link" )
     }
 }
+
+@Composable
+fun TestBackCard(modifier: Modifier, desk:String = "TEST") {
+
+}
+
+@Preview
+@Composable
+fun liat(){
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val itemWidth = (screenWidth / 2) - 25.dp
+    TestBackCard(modifier = Modifier.width(itemWidth)
+        .height(250.dp), desk = "loasoas asjasja sjansans ajsnaj sasnasnmas janas asns")
+}
+
 
 
 @Composable
