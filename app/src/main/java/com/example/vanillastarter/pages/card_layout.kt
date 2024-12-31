@@ -78,8 +78,9 @@ fun BothCard(
 //    judul: String,
 //    image: Int,
 //    desk: String
+navController: NavController,
     modifier: Modifier, judul:String, image: Int, desk:String,
-    thisParentId:Int, item: Flashcard, FlashcardViewModel: crudFlashcard,
+    thisParentId:Int, grandParentId:Int,item: Flashcard, FlashcardViewModel: crudFlashcard,
     CategoryViewModel: crudCategory
 ) {
     val flipController = rememberFlipController()
@@ -107,7 +108,7 @@ fun BothCard(
         Box(
             modifier = Modifier.padding(3.dp).align(alignment = Alignment.TopEnd)
         ){
-            Option1(onClickEdit = {  },
+            Option1(onClickEdit = { navController.navigate("editFlashcard/{thisId}/{thisParentId}/{grandParentId}".replace("{thisId}", item.id!!.toString()).replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", grandParentId.toString())) },
                 onClickDelete = { FlashcardViewModel.deleteData(item,thisParentId) })
         }
     }
@@ -214,7 +215,7 @@ fun liat(){
 
 
 @Composable
-fun CardLayout(items:List<Flashcard>,thisParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
+fun CardLayout(navController: NavController,items:List<Flashcard>,thisParentId:Int,grandParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val itemWidth = (screenWidth / 2) - 25.dp
 
@@ -230,14 +231,14 @@ fun CardLayout(items:List<Flashcard>,thisParentId:Int,FlashcardViewModel:crudFla
             ) {
                 rowItems.forEach { item ->
 
-                    BothCard(
+                    BothCard(navController,
                         modifier = Modifier
                             .width(itemWidth)
                             .height(250.dp),
                         image = R.drawable.androidparty,
                         desk = item.description,
                         judul = item.name,
-                        thisParentId=thisParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel
+                        thisParentId=thisParentId,grandParentId=grandParentId,item=item,FlashcardViewModel=FlashcardViewModel,CategoryViewModel=CategoryViewModel
 
                     )
                 }

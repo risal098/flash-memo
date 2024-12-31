@@ -49,8 +49,13 @@ class crudFlashcard(private val dao: FlashcardDao) : ViewModel() {
             _flashcard.value = dao.getFlashcardDetail(id)
         }
     }
+    fun nullFlashcard() {
+        viewModelScope.launch {
+            _flashcard.value = null
+        }
+    }
 
-    fun addData(name: String, description: String="",imagePath: String?=null,frequency: Int=0,parentId: Int,backgroundColor: String="",link:String?=null ) {
+    fun addData(name: String, description: String="",imagePath: String?=null,frequency: Int=0,parentId: Int,backgroundColor: String="",link:String?="" ) {
         viewModelScope.launch {
             dao.insert(Flashcard(name=name, description=description,imagePath=imagePath,frequency=frequency,parentId=parentId,link=link,backgroundColor=backgroundColor))
             loadAllData(parentId)
@@ -105,6 +110,12 @@ class crudCategory(private val dao: CategoryDao) : ViewModel() {
             _category.value = dao.getCategoryDetail(id)
         }
     }
+     fun nullCategory() {
+        viewModelScope.launch {
+            _category.value = null
+        }
+    }
+    
     
 /* val id: Int = 0,
     val name: String,

@@ -22,17 +22,15 @@ import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 import android.net.Uri
 @Composable
-fun TextFieldEditSet(
-    judul: String, desk: String, link: String, color: String,
-//    navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null
-) {
+fun TextFieldEditSet(item:Category,
+    navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null) {
     // State untuk menyimpan teks dan warna yang dipilih
-    var nama by remember { mutableStateOf(TextFieldValue(judul)) }
-    var desk by remember { mutableStateOf(TextFieldValue(desk)) }
-    var link by remember { mutableStateOf(TextFieldValue(link)) }
+    var nama by remember { mutableStateOf(TextFieldValue(item.name)) }
+    var desk by remember { mutableStateOf(TextFieldValue(item.description)) }
+    //var link by remember { mutableStateOf(TextFieldValue(item.link)) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
-    var selectedColor by remember { mutableStateOf(color) } // Warna default
-
+    var selectedColor by remember { mutableStateOf("pink") } // Warna default
+		var color:String="pink"
     // Opsi warna yang disediakan aplikasi
     val colorOptions = listOf(
         "pink" to colorResource(R.color.pink),
@@ -81,19 +79,7 @@ fun TextFieldEditSet(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Link",
-            color = colorResource(R.color.greyTheme),
-        )
-        OutlinedTextField(
-            value = link,
-            onValueChange = { desk = it },
-//            label = { Text("Enter text") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = colorResource(R.color.backgorundOne), shape = RoundedCornerShape(15.dp))
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+        
         /*
                 Text(
                     text = "Link",
@@ -166,12 +152,12 @@ fun TextFieldEditSet(
                 colorResource(R.color.teal),
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
-                .clickable {
-//                    CategoryViewModel.addData(name=nama.text,description=desk.text,parentId= thisParentId, backgroundColor = selectedColor, )
-//                    navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))
-                }
+                .clickable {CategoryViewModel.updateData(item.copy(name=nama.text,description=desk.text),thisParentId)
+               CategoryViewModel. nullCategory()
+                navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))
+                 }
         ){
-            Text(text = "Tambah", color = Color.White, fontSize = 24.sp)
+            Text(text = "Update", color = Color.White, fontSize = 24.sp)
         }
     }
 }

@@ -35,14 +35,16 @@ import androidx.navigation.NavController
 import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 import android.net.Uri
+import androidx.compose.runtime.*
 @Composable
-fun LayoutEditSet(judul: String, desk: String, link: String, color: String,
-//    navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null
+fun LayoutEditSet( navController: NavController,thisId:Int,parentId:Int,grandParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null
+
 )
 {
+		val category by CategoryViewModel.category.collectAsState() // object grandparent category
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-
+		CategoryViewModel.loadCategory(thisId)
     Scaffold {
             padding ->
 
@@ -93,10 +95,8 @@ fun LayoutEditSet(judul: String, desk: String, link: String, color: String,
                             ).padding(top = 20.dp, start = 20.dp, end = 20.dp)
 
                     ){
-
-                        TextFieldEditSet(judul,desk, link, color
-//                            navController,thisParentId,parentId,FlashcardViewModel ,CategoryViewModel,onPickImage,imageUri
-                        )
+											if (category!=null){
+                        TextFieldEditSet(category!!, navController,parentId,grandParentId,FlashcardViewModel ,CategoryViewModel,onPickImage,imageUri)}
                     }
                 }
             }
@@ -104,8 +104,4 @@ fun LayoutEditSet(judul: String, desk: String, link: String, color: String,
     }
 }
 
-@Preview
-@Composable
-fun liatt(){
-    LayoutEditSet("jasansnsa", "asnkanskas", "blue", "blue")
-}
+

@@ -33,7 +33,7 @@ fun SmallButton(color: Int, text: String,thisId:Int,thisParentId:Int,parentId:In
                 shape = RoundedCornerShape(100.dp)
             ).padding(vertical = 5.dp)
             .clickable { if(mode==0)
-            							{navController.navigate("addFlashcard/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisId.toString()).replace("{grandParentId}", thisParentId.toString())) }
+            							{navController.navigate("addFlashcard/{thisParentId}/{grandParentId}/{grandgrandParentId}".replace("{thisParentId}", thisId.toString()).replace("{grandParentId}", thisParentId.toString()).replace("{grandgrandParentId}", parentId.toString())) }
             							else
             							{navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisId.toString()).replace("{grandParentId}", thisParentId.toString())) } }
     ){
@@ -121,7 +121,7 @@ fun CustomBox(imageRes: Int?, title: String, description: String, modifier: Modi
         Box(
             modifier = Modifier.padding(3.dp)
         ){
-            Option1(onClickEdit = {  },
+            Option1(onClickEdit = { navController.navigate("editSet/{thisId}/{thisParentId}/{grandParentId}".replace("{thisId}", thisId.toString()).replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString())) },
                 onClickDelete = { CategoryViewModel.deleteData(item,thisParentId) })
         }
     }

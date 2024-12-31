@@ -25,12 +25,14 @@ fun navCenter(context: Context,FlashcardViewModel:crudFlashcard ,CategoryViewMod
    				  val parentId: Int? = parentIdString?.toIntOrNull()
             Layout(navController, id!!,parentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri) 
         }
-        composable("addFlashcard/{thisParentId}/{grandParentId}"){navBackStackEntry ->
+        composable("addFlashcard/{thisParentId}/{grandParentId}/{grandgrandParentId}"){navBackStackEntry ->
         		val idString = navBackStackEntry.arguments?.getString("thisParentId")
    				  val id: Int? = idString?.toIntOrNull()
-            val parentIdString = navBackStackEntry.arguments?.getString("grandParentId")
+   				  val grandParentIdString = navBackStackEntry.arguments?.getString("grandParentId")
+   				  val grandParentId: Int? = grandParentIdString?.toIntOrNull()
+            val parentIdString = navBackStackEntry.arguments?.getString("grandgrandParentId")
    				  val parentId: Int? = parentIdString?.toIntOrNull()
-   				  LayoutAddCard(navController, id!!,parentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
+   				  LayoutAddCard(navController, id!!,grandParentId!!,parentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
         }
         composable("addCategory/{thisParentId}/{grandParentId}"){navBackStackEntry ->
         		val idString = navBackStackEntry.arguments?.getString("thisParentId")
@@ -39,6 +41,26 @@ fun navCenter(context: Context,FlashcardViewModel:crudFlashcard ,CategoryViewMod
    				  val parentId: Int? = parentIdString?.toIntOrNull()
    				  LayoutAddSet(navController, id!!,parentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
         }
+        
+        composable("editFlashcard/{thisId}/{thisParentId}/{grandParentId}"){navBackStackEntry ->
+        		val thisIdString = navBackStackEntry.arguments?.getString("thisId")
+   				  val thisId: Int? = thisIdString?.toIntOrNull()
+        		val idString = navBackStackEntry.arguments?.getString("thisParentId")
+   				  val parentId: Int? = idString?.toIntOrNull()
+            val parentIdString = navBackStackEntry.arguments?.getString("grandParentId")
+   				  val grandParentId: Int? = parentIdString?.toIntOrNull()
+   				  LayoutEditCard(navController, thisId!!,parentId!!,grandParentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
+        }
+        composable("editSet/{thisId}/{thisParentId}/{grandParentId}"){navBackStackEntry ->
+        		val thisIdString = navBackStackEntry.arguments?.getString("thisId")
+   				  val thisId: Int? = thisIdString?.toIntOrNull()
+        		val idString = navBackStackEntry.arguments?.getString("thisParentId")
+   				  val parentId: Int? = idString?.toIntOrNull()
+            val parentIdString = navBackStackEntry.arguments?.getString("grandParentId")
+   				  val grandParentId: Int? = parentIdString?.toIntOrNull()
+   				  LayoutEditSet(navController, thisId!!,parentId!!,grandParentId!!,FlashcardViewModel,CategoryViewModel,onPickImage,imageUri)
+        }
+        
    }//end list
    
    

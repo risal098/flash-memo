@@ -18,14 +18,14 @@ import com.example.vanillastarter.data.*
 import androidx.navigation.NavController
 
 @Composable
-fun AddCardOrSet(navController: NavController,thisParentId:Int,parentId:Int){
+fun AddCardOrSet(navController: NavController,thisParentId:Int,parentId:Int,grandParentId:Int){
     Column(
         horizontalAlignment = Alignment.End,
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier.padding(bottom = 72.dp)
     ) {
         Button(
-            onClick = { navController.navigate("addFlashcard/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))  },
+            onClick = { navController.navigate("addFlashcard/{thisParentId}/{grandParentId}/{grandgrandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()).replace("{grandgrandParentId}", grandParentId.toString()))  },
             colors = ButtonDefaults.buttonColors(containerColor = colorResource(id = R.color.darkBlue))
         ) {
             Text(text = "Tambah Kartu", fontSize = 16.sp, color = colorResource(id = R.color.white))

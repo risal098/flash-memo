@@ -29,11 +29,11 @@ import com.example.vanillastarter.func.*
 import com.example.vanillastarter.data.*
 import android.net.Uri
 @Composable
-fun TextFieldEditCard(textNama: String, textDesk: String, textLink: String,
+fun TextFieldEditCard(item:Flashcard,
     navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
-    var nama by remember { mutableStateOf(TextFieldValue(textNama)) }
-    var desk by remember { mutableStateOf(TextFieldValue(textDesk)) }
-    var link by remember { mutableStateOf(TextFieldValue(textLink)) }
+    var nama by remember { mutableStateOf(TextFieldValue(item.name)) }
+    var desk by remember { mutableStateOf(TextFieldValue(item.description)) }
+    var link by remember { mutableStateOf(TextFieldValue(item.link!!)) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
 
 
@@ -102,9 +102,11 @@ fun TextFieldEditCard(textNama: String, textDesk: String, textLink: String,
             ).height(60.dp)
                 .clickable {
 //                    FlashcardViewModel.u(name=nama.text, description=desk.text,parentId=thisParentId,link=link.text)
+										FlashcardViewModel.updateData(item.copy(name=nama.text,description=desk.text,link=link.text),thisParentId)
+										FlashcardViewModel.nullFlashcard()
                     navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString())) }
         ){
-            Text(text = "Tambah", color = Color.White, fontSize = 24.sp)
+            Text(text = "Update", color = Color.White, fontSize = 24.sp)
         }
     }
 }
