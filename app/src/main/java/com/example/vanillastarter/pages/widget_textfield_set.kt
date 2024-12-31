@@ -26,7 +26,7 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
     // State untuk menyimpan teks dan warna yang dipilih
     var nama by remember { mutableStateOf(TextFieldValue("")) }
     var desk by remember { mutableStateOf(TextFieldValue("")) }
-    var link by remember { mutableStateOf(TextFieldValue("")) }
+  //  var link by remember { mutableStateOf(TextFieldValue("")) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
     var selectedColor by remember { mutableStateOf("pink") } // Warna default
 
@@ -78,19 +78,7 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
         )
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Link",
-            color = colorResource(R.color.greyTheme),
-        )
-        OutlinedTextField(
-            value = link,
-            onValueChange = { desk = it },
-//            label = { Text("Enter text") },
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(color = colorResource(R.color.backgorundOne), shape = RoundedCornerShape(15.dp))
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+     
 /*
         Text(
             text = "Link",
