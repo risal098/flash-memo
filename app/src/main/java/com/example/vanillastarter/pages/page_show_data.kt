@@ -237,7 +237,7 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
                 Spacer(modifier = Modifier.height(20.dp))
                 if(thisCategory!=null){
                     CategoryBanner(
-                        category = thisCategory,
+                        category = thisCategory!!,
                         onClickPlay = {  }
                     )
                 }
