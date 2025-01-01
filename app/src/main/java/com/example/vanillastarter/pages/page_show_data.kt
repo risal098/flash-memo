@@ -103,7 +103,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
+import androidx.compose.ui.text.style.TextAlign
 import coil.compose.rememberImagePainter
 //ini widget2, page ada di paling bawah
 @Composable
@@ -141,6 +143,7 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
 		val flashcardDataList by FlashcardViewModel.dataList.collectAsState() // list/set flashcard
 		val grandParentCategory by CategoryViewModel.category.collectAsState() // object grandparent category
 		val thisCategory by CategoryViewModel.thisCategory.collectAsState()
+     
 
 		if(parentId!=0){
 
@@ -258,13 +261,48 @@ fun Layout(navController: NavController,thisParentId:Int,parentId:Int,FlashcardV
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))
-                SubJudul("Set Kartu")
-                Spacer(modifier = Modifier.height(10.dp))
-                ResponsiveGridLayout(filteredCategories,thisParentId,parentId,navController,FlashcardViewModel ,CategoryViewModel)
-                Spacer(modifier = Modifier.height(20.dp))
-                SubJudul("Kartu")
-                Spacer(modifier = Modifier.height(10.dp))
-                CardLayout(navController,filteredFlashcards,thisParentId,parentId,FlashcardViewModel ,CategoryViewModel)
+
+                if(filteredCategories.size==0&&filteredFlashcards.size==0){
+                    Column {
+                        Image(
+                            painter = painterResource(id = R.drawable.empty_box),
+                            contentDescription = null,
+                            contentScale = ContentScale.Fit,
+//                alpha = 1F,
+                            modifier = Modifier
+                                .height(200.dp).fillMaxWidth()
+                                .align(alignment = Alignment.CenterHorizontally)
+                        )
+                        Text("Belum ada data yang ditambahkan", textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth().align(alignment = Alignment.CenterHorizontally))
+                    }
+                }else {
+                    if (filteredCategories.size != 0) {
+                        Column {
+                            SubJudul("Set Kartu")
+                            Spacer(modifier = Modifier.height(10.dp))
+                            ResponsiveGridLayout(
+                                filteredCategories,
+                                thisParentId,
+                                parentId,
+                                navController,
+                                FlashcardViewModel,
+                                CategoryViewModel
+                            )
+                        }
+                    }
+
+                    if(filteredFlashcards.size!=0){
+                        Column {
+                            Spacer(modifier = Modifier.height(20.dp))
+                            SubJudul("Kartu")
+                            Spacer(modifier = Modifier.height(10.dp))
+                            CardLayout(navController,filteredFlashcards,thisParentId,parentId,FlashcardViewModel ,CategoryViewModel)
+                        }
+                    }
+
+
+                }
+
             }
 
             Box(
