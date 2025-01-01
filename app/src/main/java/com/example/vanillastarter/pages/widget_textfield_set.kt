@@ -26,7 +26,8 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
     // State untuk menyimpan teks dan warna yang dipilih
     var nama by remember { mutableStateOf(TextFieldValue("")) }
     var desk by remember { mutableStateOf(TextFieldValue("")) }
-  //  var link by remember { mutableStateOf(TextFieldValue("")) }
+    val imagePath = remember { mutableStateOf<String?>(null) }
+    //  var link by remember { mutableStateOf(TextFieldValue("")) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
     var selectedColor by remember { mutableStateOf("pink") } // Warna default
 
@@ -46,7 +47,11 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
         modifier = Modifier
             .fillMaxWidth(),
     ) {
-        AddImageBox(onClick = { }, false)
+        AddImageBox(
+            onClick = { },
+            isPictureAdded = imagePath != null,
+            imagePath = imagePath
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Nama Set",
@@ -152,7 +157,7 @@ fun TextFieldSet(navController: NavController,thisParentId:Int,parentId:Int,Flas
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
             .clickable {
-            CategoryViewModel.addData(name=nama.text,description=desk.text,parentId= thisParentId, backgroundColor = selectedColor, )
+            CategoryViewModel.addData(name=nama.text,description=desk.text,parentId= thisParentId, backgroundColor = selectedColor, imagePath = imagePath.value)
             navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", thisParentId.toString()).replace("{grandParentId}", parentId.toString()))  }
         ){
             Text(text = "Tambah", color = Color.White, fontSize = 24.sp)

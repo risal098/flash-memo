@@ -21,7 +21,7 @@ fun ImageDisplay(imagePath: String?) {
                 Image(
                     painter = painterResource(id = imagePath.toInt()),
                     contentDescription = "Image Display",
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
         }
@@ -30,7 +30,7 @@ fun ImageDisplay(imagePath: String?) {
                 Image(
                     painter = rememberAsyncImagePainter(model = imagePath),
                     contentDescription = "Image Display",
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
         }

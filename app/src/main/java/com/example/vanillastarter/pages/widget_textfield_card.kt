@@ -31,6 +31,7 @@ import android.net.Uri
 fun TextFieldCard(navController: NavController,thisParentId:Int,parentId:Int,grandParentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
     var nama by remember { mutableStateOf(TextFieldValue("")) }
     var desk by remember { mutableStateOf(TextFieldValue("")) }
+    val imagePath = remember { mutableStateOf<String?>(null) }
     var link by remember { mutableStateOf(TextFieldValue("")) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
 
@@ -39,7 +40,11 @@ fun TextFieldCard(navController: NavController,thisParentId:Int,parentId:Int,gra
         modifier = Modifier
             .fillMaxWidth(),
     ) {
-        AddImageBox(onClick = { }, false)
+        AddImageBox(
+            onClick = { },
+            isPictureAdded = imagePath != null,
+            imagePath = imagePath
+        )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Judul",
@@ -99,7 +104,7 @@ fun TextFieldCard(navController: NavController,thisParentId:Int,parentId:Int,gra
                 shape = RoundedCornerShape(100.dp)
             ).height(60.dp)
                 .clickable { 
-                FlashcardViewModel.addData(name=nama.text, description=desk.text,parentId=thisParentId,link=link.text)
+                FlashcardViewModel.addData(name=nama.text, description=desk.text,parentId=thisParentId,link=link.text, imagePath = imagePath.value)
                 navController.navigate("showAllDataPage/{thisParentId}/{grandParentId}".replace("{thisParentId}", parentId.toString()).replace("{grandParentId}", grandParentId.toString())) }
         ){
             Text(text = "Tambah", color = Color.White, fontSize = 24.sp)
