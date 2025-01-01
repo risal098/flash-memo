@@ -33,7 +33,7 @@ fun TextFieldEditCard(item:Flashcard,
     navController: NavController,thisParentId:Int,parentId:Int,FlashcardViewModel:crudFlashcard ,CategoryViewModel:crudCategory,onPickImage: () -> Unit,imageUri: Uri?,subCategory:Category?=null){
     var nama by remember { mutableStateOf(TextFieldValue(item.name)) }
     var desk by remember { mutableStateOf(TextFieldValue(item.description)) }
-    val imagePath = remember { mutableStateOf<String?>(null) }
+    val imagePath = remember { mutableStateOf<String?>(item.imagePath) }
     var link by remember { mutableStateOf(TextFieldValue(item.link!!)) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
 

@@ -27,10 +27,10 @@ fun TextFieldEditSet(item:Category,
     // State untuk menyimpan teks dan warna yang dipilih
     var nama by remember { mutableStateOf(TextFieldValue(item.name)) }
     var desk by remember { mutableStateOf(TextFieldValue(item.description)) }
-    val imagePath = remember { mutableStateOf<String?>(null) }
+    val imagePath = remember { mutableStateOf<String?>(item.imagePath) }
     //var link by remember { mutableStateOf(TextFieldValue(item.link)) }
     var expanded by remember { mutableStateOf(false) } // Untuk dropdown menu
-    var selectedColor by remember { mutableStateOf("pink") } // Warna default
+    var selectedColor by remember { mutableStateOf(item.backgroundColor) } // Warna default
 		var color:String="pink"
     // Opsi warna yang disediakan aplikasi
     val colorOptions = listOf(
@@ -120,7 +120,7 @@ fun TextFieldEditSet(item:Category,
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ){
-                    Text(text = color, color = colorResource(R.color.greyTheme))
+                    Text(text = selectedColor, color = colorResource(R.color.greyTheme))
                     Box(
                         modifier = Modifier.background(
                             color = colorResource(colorDict(selectedColor)),
