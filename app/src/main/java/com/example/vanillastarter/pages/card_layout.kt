@@ -200,9 +200,19 @@ fun BackCard(modifier: Modifier, desk:String = "TEST",
             )
         }
 
-        ButtonLink(color = R.color.teal, onClick = {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
-context.startActivity(intent)}, text = "Link" )
+        if(item.link!=null){
+            ButtonLink(color = R.color.teal, onClick = {
+                try{
+
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(item.link))
+                    context.startActivity(intent)
+                }catch(e: Exception){
+//                    {}
+                }}, text = "Link"
+            )
+        }
+
+
     }
 }
 
